@@ -103,7 +103,7 @@ export default async function RecursosPage() {
             <section className="bg-mist-50 py-14 lg:py-16">
               <div
                 data-reveal="zoom"
-                className="container-acf grid gap-10 lg:grid-cols-[1.4fr_1fr] lg:gap-12"
+                className="container-acf grid min-w-0 gap-8 lg:grid-cols-[1.4fr_1fr] lg:gap-12"
               >
                 <MediaEmbed media={media} titulo={destacado.titulo} />
                 <div className="flex flex-col justify-center">

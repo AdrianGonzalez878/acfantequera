@@ -60,7 +60,7 @@ export function RecursosLista({ recursos }: { recursos: Recurso[] }) {
         </div>
       )}
 
-      <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-6 lg:grid-cols-3 lg:gap-8">
         {visibles.map((recurso) => (
           <RecursoCard key={recurso._id} recurso={recurso} />
         ))}

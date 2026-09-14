@@ -36,7 +36,17 @@ export const metadata: Metadata = {
 };
 
 export default async function InicioPage() {
-  const recursos = (await getRecursos()).slice(0, 3);
+  const todos = await getRecursos();
+  const destacado = todos.find((recurso) => recurso.destacado) ?? todos[0];
+  const recursos = destacado
+    ? [destacado, ...todos.filter((recurso) => recurso._id !== destacado._id)].slice(
+        0,
+        5,
+      )
+    : [];
+  const resto = destacado
+    ? recursos.filter((recurso) => recurso._id !== destacado._id)
+    : [];
 
   return (
     <>
@@ -56,11 +66,11 @@ export default async function InicioPage() {
               alianza con RSM Bogarín, firma integrante de la red internacional
               RSM.
             </p>
-            <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-4">
-              <Link href="#contacto" className="btn-primary">
+            <div className="mt-8 flex w-full flex-col gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-7 sm:gap-y-4">
+              <Link href="#contacto" className="btn-primary w-full sm:w-auto">
                 Agendar una consulta
               </Link>
-              <Link href="#servicios" className="btn-link">
+              <Link href="#servicios" className="btn-link self-center">
                 Ver servicios <span aria-hidden="true">→</span>
               </Link>
             </div>
@@ -330,13 +340,22 @@ export default async function InicioPage() {
           </div>
 
           {recursos.length > 0 ? (
-            <div
-              data-reveal-stagger="alternate"
-              className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-3"
-            >
-              {recursos.map((recurso) => (
-                <RecursoCard key={recurso._id} recurso={recurso} />
-              ))}
+            <div className="mt-10 sm:mt-12">
+              {destacado && (
+                <div data-reveal="up" className="min-w-0">
+                  <RecursoCard recurso={destacado} destacado />
+                </div>
+              )}
+              {resto.length > 0 && (
+                <div
+                  data-reveal-stagger="alternate"
+                  className="mt-3 grid grid-cols-2 gap-3 sm:mt-6 sm:gap-6 lg:grid-cols-3 lg:gap-8"
+                >
+                  {resto.map((recurso) => (
+                    <RecursoCard key={recurso._id} recurso={recurso} />
+                  ))}
+                </div>
+              )}
             </div>
           ) : (
             <p className="mt-10 max-w-[560px] text-[15px] leading-[1.7] text-ink-500">

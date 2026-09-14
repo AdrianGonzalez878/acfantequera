@@ -22,7 +22,7 @@ export function BrandLogo({ className, height = 26, priority = false }: Props) {
       width={WIDTH}
       height={HEIGHT}
       priority={priority}
-      className={cn("w-auto", className)}
+      className={cn("h-auto w-auto", className)}
       style={{ height, width }}
       sizes={`${width}px`}
     />

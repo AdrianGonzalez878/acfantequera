@@ -205,7 +205,7 @@ export default async function RecursoPage({ params }: Props) {
         <section className="section bg-mist-50">
           <div className="container-acf">
             <h2 className="section-title">Más contenido</h2>
-            <div className="mt-10 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-6 lg:grid-cols-3 lg:gap-8">
               {relacionados.map((item) => (
                 <RecursoCard key={item._id} recurso={item} />
               ))}

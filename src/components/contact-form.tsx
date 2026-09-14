@@ -98,7 +98,7 @@ export function ContactForm() {
 
   if (enviado) {
     return (
-      <div className="bg-white p-9">
+      <div className="bg-white p-6 sm:p-9">
         <p className="font-serif text-[22px] text-navy-900">
           WhatsApp está listo
         </p>
@@ -117,7 +117,7 @@ export function ContactForm() {
   }
 
   return (
-    <form onSubmit={onSubmit} className="bg-white p-7 sm:p-9" noValidate>
+    <form onSubmit={onSubmit} className="bg-white p-5 sm:p-9" noValidate>
       <p className="font-serif text-[20px] text-navy-900">
         Cuéntenos qué necesita
       </p>

@@ -65,7 +65,11 @@ export function SiteHeader() {
               className="flex-none bg-white px-2.5 py-1.5"
               aria-label={`${company.shortName} — inicio`}
             >
-              <BrandLogo height={36} priority />
+              <BrandLogo
+                height={36}
+                className="!h-7 !w-auto sm:!h-9"
+                priority
+              />
             </Link>
 
             <nav

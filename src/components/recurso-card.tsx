@@ -28,14 +28,20 @@ function WaveGlyph({ className }: { className?: string }) {
   );
 }
 
-export function RecursoCard({ recurso }: { recurso: Recurso }) {
+export function RecursoCard({
+  recurso,
+  destacado = false,
+}: {
+  recurso: Recurso;
+  destacado?: boolean;
+}) {
   const media = parseMediaUrl(recurso.url);
   const cover =
     imageUrl(recurso.portada, 800, 450) ?? media?.thumbnailUrl ?? null;
   const esPodcast = recurso.formato === "podcast";
 
   return (
-    <article className="group flex flex-col border border-hairline bg-white transition-shadow hover:shadow-[0_14px_40px_rgba(11,27,63,0.12)]">
+    <article className="group flex min-w-0 flex-col border border-hairline bg-white transition-shadow hover:shadow-[0_14px_40px_rgba(11,27,63,0.12)]">
       <Link
         href={`/recursos/${recurso.slug}`}
         className="relative block aspect-video overflow-hidden bg-navy-900"
@@ -47,32 +53,67 @@ export function RecursoCard({ recurso }: { recurso: Recurso }) {
             src={cover}
             alt=""
             fill
-            sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
+            sizes={
+              destacado
+                ? "(min-width: 1024px) 920px, 100vw"
+                : "(min-width: 1024px) 380px, 50vw"
+            }
             className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
           />
         ) : (
-          <span className="bg-gradient-navy absolute inset-0 flex items-center justify-center font-serif text-[64px] font-bold text-white/10">
+          <span className="bg-gradient-navy absolute inset-0 flex items-center justify-center font-serif text-[40px] font-bold text-white/10 sm:text-[64px]">
             ACF
           </span>
         )}
-        <span className="absolute bottom-3 left-3 flex size-11 items-center justify-center bg-brand-600 text-white">
+        <span
+          className={
+            destacado
+              ? "absolute bottom-3 left-3 flex size-11 items-center justify-center bg-brand-600 text-white"
+              : "absolute bottom-2 left-2 flex size-8 items-center justify-center bg-brand-600 text-white sm:bottom-3 sm:left-3 sm:size-11"
+          }
+        >
           {esPodcast ? (
-            <WaveGlyph className="size-5" />
+            <WaveGlyph className={destacado ? "size-5" : "size-4 sm:size-5"} />
           ) : (
-            <PlayGlyph className="size-5" />
+            <PlayGlyph className={destacado ? "size-5" : "size-4 sm:size-5"} />
           )}
         </span>
       </Link>
 
-      <div className="flex flex-1 flex-col p-6">
-        <div className="flex flex-wrap items-center gap-x-2.5 gap-y-1 text-[11.5px] font-bold uppercase tracking-[0.12em] text-brand-600">
+      <div
+        className={
+          destacado
+            ? "flex flex-1 flex-col p-5 sm:p-6"
+            : "flex flex-1 flex-col p-3 sm:p-6"
+        }
+      >
+        <div
+          className={
+            destacado
+              ? "flex flex-wrap items-center gap-x-2 gap-y-1 text-[11.5px] font-bold uppercase tracking-[0.12em] text-brand-600"
+              : "flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] font-bold uppercase tracking-[0.12em] text-brand-600 sm:text-[11.5px]"
+          }
+        >
           <span>{esPodcast ? "Podcast" : "Video"}</span>
           {media && (
             <>
-              <span className="text-hairline" aria-hidden="true">
+              <span
+                className={
+                  destacado
+                    ? "text-hairline"
+                    : "hidden text-hairline sm:inline"
+                }
+                aria-hidden="true"
+              >
                 ·
               </span>
-              <span className="font-semibold normal-case tracking-normal text-ink-400">
+              <span
+                className={
+                  destacado
+                    ? "font-semibold normal-case tracking-normal text-ink-400"
+                    : "hidden font-semibold normal-case tracking-normal text-ink-400 sm:inline"
+                }
+              >
                 {media.providerLabel}
               </span>
             </>
@@ -89,7 +130,13 @@ export function RecursoCard({ recurso }: { recurso: Recurso }) {
           )}
         </div>
 
-        <h3 className="mt-3 font-serif text-[19px] leading-snug text-navy-900">
+        <h3
+          className={
+            destacado
+              ? "mt-3 font-serif text-[20px] leading-snug text-navy-900 sm:text-[22px]"
+              : "mt-2 font-serif text-[14.5px] leading-snug text-navy-900 sm:mt-3 sm:text-[19px]"
+          }
+        >
           <Link
             href={`/recursos/${recurso.slug}`}
             className="transition-colors hover:text-brand-600"
@@ -98,11 +145,23 @@ export function RecursoCard({ recurso }: { recurso: Recurso }) {
           </Link>
         </h3>
 
-        <p className="mt-2.5 line-clamp-3 text-[14px] leading-[1.65] text-ink-500">
+        <p
+          className={
+            destacado
+              ? "mt-2.5 line-clamp-3 text-[14px] leading-[1.65] text-ink-500"
+              : "mt-2 hidden text-[14px] leading-[1.65] text-ink-500 sm:mt-2.5 sm:line-clamp-3 sm:block"
+          }
+        >
           {recurso.resumen}
         </p>
 
-        <div className="mt-4 flex flex-wrap items-center gap-2 pt-1">
+        <div
+          className={
+            destacado
+              ? "mt-4 flex flex-wrap items-center gap-2 pt-1"
+              : "mt-3 hidden flex-wrap items-center gap-2 pt-1 sm:mt-4 sm:flex"
+          }
+        >
           {recurso.temas?.map((tema) => (
             <span
               key={tema.slug}
@@ -113,7 +172,13 @@ export function RecursoCard({ recurso }: { recurso: Recurso }) {
           ))}
         </div>
 
-        <p className="mt-auto pt-5 text-[12.5px] text-ink-400">
+        <p
+          className={
+            destacado
+              ? "mt-auto pt-4 text-[12.5px] text-ink-400"
+              : "mt-auto pt-3 text-[11px] text-ink-400 sm:pt-5 sm:text-[12.5px]"
+          }
+        >
           {formatDate(recurso.fecha)}
         </p>
       </div>

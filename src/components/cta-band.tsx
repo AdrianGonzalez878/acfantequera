@@ -24,11 +24,11 @@ export function CtaBand({
         </div>
 
         <div className="flex flex-col gap-6">
-          <div className="flex flex-wrap gap-4">
-            <Link href="/#contacto" className="btn-primary">
+          <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-4">
+            <Link href="/#contacto" className="btn-primary w-full sm:w-auto">
               Agendar una consulta
             </Link>
-            <a href={`mailto:${company.email}`} className="btn-outline-light">
+            <a href={`mailto:${company.email}`} className="btn-outline-light w-full sm:w-auto">
               Escribir por correo
             </a>
           </div>

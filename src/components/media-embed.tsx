@@ -45,7 +45,7 @@ export function MediaEmbed({ media, titulo, className }: Props) {
   return (
     <div
       className={cn(
-        "overflow-hidden bg-navy-950",
+        "overflow-hidden bg-navy-950 min-w-0",
         media.isAudio
           ? (AUDIO_HEIGHT[media.provider] ?? "h-[232px]")
           : "aspect-video",
