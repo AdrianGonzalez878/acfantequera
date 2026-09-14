@@ -15,7 +15,7 @@ import {
   getRecursosRelacionados,
 } from "@/sanity/queries";
 
-export const revalidate = process.env.NODE_ENV === "development" ? 0 : 60;
+export const revalidate = 60;
 
 type Props = { params: Promise<{ slug: string }> };
 

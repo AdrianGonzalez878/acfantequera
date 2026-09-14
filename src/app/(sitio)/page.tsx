@@ -19,7 +19,7 @@ import {
 } from "@/data/site";
 import { getRecursos } from "@/sanity/queries";
 
-export const revalidate = process.env.NODE_ENV === "development" ? 0 : 300;
+export const revalidate = 300;
 
 export default async function InicioPage() {
   const recursos = (await getRecursos()).slice(0, 3);

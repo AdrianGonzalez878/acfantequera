@@ -4,7 +4,7 @@ import { isSanityConfigured } from "@/sanity/env";
 
 import StudioClient from "./studio-client";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "ACF · Studio de contenido",

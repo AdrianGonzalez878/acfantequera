@@ -11,7 +11,7 @@ import { formatDate } from "@/lib/utils";
 import { isSanityConfigured } from "@/sanity/env";
 import { getRecursos } from "@/sanity/queries";
 
-export const revalidate = process.env.NODE_ENV === "development" ? 0 : 60;
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   title: "Videos y podcast",
