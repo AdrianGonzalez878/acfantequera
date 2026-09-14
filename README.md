@@ -165,8 +165,7 @@ sección de contacto por si alguien prefiere escribir por ahí.
 
 ## Pendientes antes de publicar
 
-- [ ] Definir el dominio real en `NEXT_PUBLIC_SITE_URL` (afecta metadatos,
-      sitemap y JSON-LD).
+- [x] Dominio: `https://acfdeantequera.com` (`NEXT_PUBLIC_SITE_URL`).
 - [ ] Crear el proyecto de Sanity y publicar los primeros videos.
 - [ ] Confirmar el teléfono de Puebla: el mockup trae `(229) 945 4010` y el
       currículum `(229) 94 590 10`. El 229 es lada de Veracruz; la de Puebla

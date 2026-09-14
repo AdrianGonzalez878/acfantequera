@@ -16,7 +16,7 @@ export const company = {
   email: "antequerasc04@hotmail.com",
   description:
     "Despacho de auditoría, impuestos y consultoría con más de dos décadas acompañando a empresas e instituciones en Oaxaca y Puebla.",
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://acfantequera.mx",
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://acfdeantequera.com",
 } as const;
 
 /**
