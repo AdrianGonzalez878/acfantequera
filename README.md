@@ -16,6 +16,7 @@ gradientes navy, títulos en serif.
 | Estilos | Tailwind CSS v4 | Tokens de la paleta en `src/app/globals.css` |
 | CMS | Sanity v6 (Studio embebido en `/studio`) | El contador publica videos/podcast pegando un enlace |
 | Contacto | WhatsApp (`wa.me`) | El formulario abre un chat con el mensaje ya armado; sin costo ni API |
+| Analítica | Vercel Analytics + Speed Insights | Tráfico y Core Web Vitals, sin cookies de terceros |
 
 ## Arrancar
 

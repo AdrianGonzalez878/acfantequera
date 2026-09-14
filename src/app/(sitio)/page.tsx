@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -18,8 +19,21 @@ import {
   yearsActive,
 } from "@/data/site";
 import { getRecursos } from "@/sanity/queries";
+import { seo } from "@/lib/seo";
 
 export const revalidate = 300;
+
+export const metadata: Metadata = {
+  title: { absolute: seo.titleDefault },
+  description: seo.description,
+  alternates: { canonical: "/" },
+  openGraph: {
+    title: seo.titleDefault,
+    description: seo.description,
+    url: "/",
+    type: "website",
+  },
+};
 
 export default async function InicioPage() {
   const recursos = (await getRecursos()).slice(0, 3);
@@ -34,7 +48,8 @@ export default async function InicioPage() {
               Despacho de auditoría · impuestos · consultoría
             </p>
             <h1 className="mt-5 display-title">
-              Su despacho de confianza en auditoría, impuestos y consultoría.
+              Su despacho de auditoría, impuestos y consultoría en Oaxaca y
+              Puebla.
             </h1>
             <p className="mt-6 body-lg">
               Más de dos décadas de experiencia, presencia en Oaxaca y Puebla, y

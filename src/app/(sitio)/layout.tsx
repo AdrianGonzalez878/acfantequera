@@ -1,47 +1,9 @@
+import { JsonLd } from "@/components/json-ld";
 import { ScrollReveal } from "@/components/scroll-reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { WhatsAppButton } from "@/components/whatsapp-button";
-import { company, leadPartner, offices } from "@/data/site";
-
-const jsonLd = {
-  "@context": "https://schema.org",
-  "@graph": [
-    {
-      "@type": "AccountingService",
-      "@id": `${company.url}#firma`,
-      name: company.name,
-      alternateName: `${company.shortName} Asesores y Consultores`,
-      description: company.description,
-      url: company.url,
-      email: company.email,
-      taxID: company.rfc,
-      foundingDate: "2004",
-      logo: `${company.url}/logo-acf.png`,
-      image: `${company.url}/logo-acf.png`,
-      areaServed: ["Oaxaca", "Puebla", "México"],
-      address: offices.map((office) => ({
-        "@type": "PostalAddress",
-        streetAddress: office.address,
-        addressRegion: office.city,
-        addressCountry: "MX",
-      })),
-      telephone: offices.map((office) => office.phoneHref),
-      knowsLanguage: ["es-MX"],
-      employee: { "@id": `${company.url}#socio-director` },
-    },
-    {
-      "@type": "Person",
-      "@id": `${company.url}#socio-director`,
-      name: leadPartner.name,
-      jobTitle: leadPartner.role,
-      email: leadPartner.email,
-      telephone: leadPartner.phoneHref,
-      image: `${company.url}${leadPartner.photo.src}`,
-      worksFor: { "@id": `${company.url}#firma` },
-    },
-  ],
-};
+import { firmJsonLd } from "@/lib/seo";
 
 export default function SitioLayout({
   children,
@@ -63,10 +25,7 @@ export default function SitioLayout({
       <SiteFooter />
       <WhatsAppButton />
       <ScrollReveal />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={firmJsonLd()} />
     </>
   );
 }

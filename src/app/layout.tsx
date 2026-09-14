@@ -1,7 +1,10 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import { Analytics } from "@vercel/analytics/next";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 import { company } from "@/data/site";
+import { seo } from "@/lib/seo";
 
 import "./globals.css";
 
@@ -14,22 +17,25 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL(company.url),
   title: {
-    default: `${company.shortName} · ${company.name}`,
-    template: `%s · ${company.shortName} Asesores y Consultores`,
+    default: seo.titleDefault,
+    template: seo.titleTemplate,
   },
-  description: company.description,
-  applicationName: company.shortName,
-  authors: [{ name: company.name }],
-  keywords: [
-    "contador Oaxaca",
-    "despacho contable Oaxaca",
-    "auditoría Oaxaca",
-    "asesoría fiscal Puebla",
-    "dictamen fiscal",
-    "SAT",
-    "RSM Bogarín",
-    "ACF Antequera",
-  ],
+  description: seo.description,
+  applicationName: `${company.shortName} Asesores y Consultores`,
+  authors: [{ name: company.name, url: company.url }],
+  creator: company.name,
+  publisher: company.name,
+  category: "finance",
+  keywords: [...seo.keywords],
+  alternates: {
+    canonical: "/",
+    languages: { "es-MX": "/", es: "/" },
+  },
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   icons: {
     icon: [
       { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
@@ -41,12 +47,30 @@ export const metadata: Metadata = {
     type: "website",
     locale: "es_MX",
     siteName: `${company.shortName} Asesores y Consultores`,
-    title: `${company.shortName} · ${company.name}`,
-    description: company.description,
+    title: seo.titleDefault,
+    description: seo.description,
     url: company.url,
-    images: [{ url: "/icon-512.png", width: 512, height: 512, alt: "ACF" }],
   },
-  robots: { index: true, follow: true },
+  twitter: {
+    card: "summary_large_image",
+    title: seo.titleDefault,
+    description: seo.description,
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
+  other: {
+    "geo.region": "MX-OAX",
+    "geo.placename": "Oaxaca de Juárez",
+  },
 };
 
 export const viewport: Viewport = {
@@ -68,6 +92,8 @@ export default function RootLayout({
           <style>{`[data-reveal],[data-reveal-stagger]>*{opacity:1!important;transform:none!important}`}</style>
         </noscript>
         {children}
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

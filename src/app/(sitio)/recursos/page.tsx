@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { CtaBand } from "@/components/cta-band";
+import { JsonLd } from "@/components/json-ld";
 import { MediaEmbed } from "@/components/media-embed";
 import { PageHero } from "@/components/page-hero";
 import { RecursosLista } from "@/components/recursos-lista";
 import { company } from "@/data/site";
 import { parseMediaUrl } from "@/lib/media";
+import { breadcrumbJsonLd } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 import { isSanityConfigured } from "@/sanity/env";
 import { getRecursos } from "@/sanity/queries";
@@ -14,9 +16,23 @@ import { getRecursos } from "@/sanity/queries";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: "Videos y podcast",
+  title: "Videos y podcast sobre el SAT, impuestos y contabilidad",
   description:
-    "Explicaciones en video y episodios de podcast sobre el SAT, obligaciones fiscales y contabilidad, a cargo del equipo de ACF Asesores y Consultores.",
+    "Explicaciones en video y podcast sobre el SAT, obligaciones fiscales y contabilidad, a cargo del equipo de ACF Asesores y Consultores en Oaxaca y Puebla.",
+  alternates: { canonical: "/recursos" },
+  keywords: [
+    "podcast impuestos México",
+    "videos SAT",
+    "explicación fiscal",
+    "obligaciones fiscales empresas",
+  ],
+  openGraph: {
+    title: "Videos y podcast fiscales | ACF Antequera",
+    description:
+      "Contenido del despacho sobre el SAT, impuestos y contabilidad para empresas.",
+    url: "/recursos",
+    type: "website",
+  },
 };
 
 export default async function RecursosPage() {
@@ -141,6 +157,12 @@ export default async function RecursosPage() {
       <CtaBand
         title="¿Tiene una duda que merece su propio video?"
         lead="Escríbanos el tema y lo consideramos para una próxima publicación. Si su caso requiere atención inmediata, agendamos una consulta."
+      />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Inicio", path: "/" },
+          { name: "Videos y podcast", path: "/recursos" },
+        ])}
       />
     </>
   );

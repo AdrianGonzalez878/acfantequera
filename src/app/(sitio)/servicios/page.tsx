@@ -2,14 +2,32 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 import { CtaBand } from "@/components/cta-band";
+import { JsonLd } from "@/components/json-ld";
 import { PageHero } from "@/components/page-hero";
 import { ServiceCard } from "@/components/service-card";
 import { services } from "@/data/site";
+import { breadcrumbJsonLd, servicesJsonLd } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Servicios",
+  title: "Auditoría, impuestos y dictámenes fiscales en Oaxaca y Puebla",
   description:
-    "Auditoría y atestiguamiento, impuestos, contabilidad, consultoría en riesgos, consultoría de negocios y servicios para entidades gubernamentales.",
+    "Seis áreas de servicio: auditoría y atestiguamiento, impuestos, contabilidad, consultoría en riesgos y PLD, consultoría de negocios y entidades gubernamentales.",
+  alternates: { canonical: "/servicios" },
+  keywords: [
+    "auditoría de estados financieros Oaxaca",
+    "dictamen IMSS INFONAVIT",
+    "planeación fiscal Puebla",
+    "prevención de lavado de dinero",
+    "contabilidad gubernamental",
+    "precios de transferencia México",
+  ],
+  openGraph: {
+    title: "Servicios de auditoría, impuestos y consultoría | ACF",
+    description:
+      "Auditoría, impuestos, dictámenes, PLD y consultoría para empresas e instituciones en Oaxaca y Puebla.",
+    url: "/servicios",
+    type: "website",
+  },
 };
 
 export default function ServiciosPage() {
@@ -68,6 +86,13 @@ export default function ServiciosPage() {
       </section>
 
       <CtaBand />
+      <JsonLd
+        data={breadcrumbJsonLd([
+          { name: "Inicio", path: "/" },
+          { name: "Servicios", path: "/servicios" },
+        ])}
+      />
+      <JsonLd data={servicesJsonLd()} />
     </>
   );
 }

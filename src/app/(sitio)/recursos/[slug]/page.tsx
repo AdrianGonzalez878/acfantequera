@@ -2,11 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 
+import { JsonLd } from "@/components/json-ld";
 import { MediaEmbed } from "@/components/media-embed";
 import { NotasRecurso } from "@/components/notas-recurso";
 import { RecursoCard } from "@/components/recurso-card";
-import { company } from "@/data/site";
+import { company, leadPartner } from "@/data/site";
 import { parseMediaUrl } from "@/lib/media";
+import { absoluteUrl, breadcrumbJsonLd, durationToIso8601 } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
 import { imageUrl } from "@/sanity/image";
 import {
@@ -37,12 +39,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: recurso.titulo,
     description: recurso.resumen,
     alternates: { canonical: `/recursos/${recurso.slug}` },
+    authors: [{ name: leadPartner.name }],
     openGraph: {
       type: "article",
       title: recurso.titulo,
       description: recurso.resumen,
       publishedTime: recurso.fecha,
-      images: imagen ? [{ url: imagen }] : undefined,
+      url: `/recursos/${recurso.slug}`,
+      images: imagen ? [{ url: imagen, alt: recurso.titulo }] : undefined,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: recurso.titulo,
+      description: recurso.resumen,
+      images: imagen ? [imagen] : undefined,
     },
   };
 }
@@ -67,9 +77,23 @@ export default async function RecursoPage({ params }: Props) {
     datePublished: recurso.fecha,
     thumbnailUrl: imagen,
     embedUrl: media?.embedUrl ?? undefined,
-    url: `${company.url}/recursos/${recurso.slug}`,
-    publisher: { "@type": "Organization", name: company.name },
+    duration: durationToIso8601(recurso.duracion),
+    inLanguage: "es-MX",
+    url: absoluteUrl(`/recursos/${recurso.slug}`),
+    publisher: {
+      "@type": "Organization",
+      name: company.name,
+      logo: { "@type": "ImageObject", url: absoluteUrl("/logo-acf.png") },
+    },
+    author: { "@type": "Person", name: leadPartner.name },
+    mainEntityOfPage: absoluteUrl(`/recursos/${recurso.slug}`),
   };
+
+  const breadcrumbs = breadcrumbJsonLd([
+    { name: "Inicio", path: "/" },
+    { name: "Videos y podcast", path: "/recursos" },
+    { name: recurso.titulo, path: `/recursos/${recurso.slug}` },
+  ]);
 
   return (
     <>
@@ -190,10 +214,8 @@ export default async function RecursoPage({ params }: Props) {
         </section>
       )}
 
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
+      <JsonLd data={jsonLd} />
+      <JsonLd data={breadcrumbs} />
     </>
   );
 }
