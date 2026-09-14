@@ -1,0 +1,358 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   Sistema de diseño ACF — dirección "1c" (Ejecutivo multipágina)
+   Paleta navy + azul, títulos en serif, cuerpo en sans.
+--------------------------------------------------------------------------- */
+@theme {
+  --color-navy-950: #081530;
+  --color-navy-900: #0b1b3f;
+  --color-navy-800: #16213d;
+  --color-navy-700: #173a78;
+
+  --color-brand-600: #1e4fd8;
+  --color-brand-500: #3a66e0;
+  --color-brand-400: #4c7bef;
+
+  --color-ink-700: #3a4259;
+  --color-ink-500: #5b6478;
+  --color-ink-400: #8a93a6;
+
+  --color-mist-100: #e4e9f4;
+  --color-mist-50: #f3f6fc;
+
+  --color-hairline: rgba(11, 27, 63, 0.12);
+
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system,
+    "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --font-serif: Georgia, "Times New Roman", "Times", serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* Compensa el header pegajoso al navegar por anclas */
+    scroll-padding-top: 4rem;
+    -webkit-text-size-adjust: 100%;
+    /* Evita barra horizontal por las entradas laterales, sin romper sticky */
+    overflow-x: clip;
+  }
+
+  /* Desde md aparece además la franja de contacto sobre la barra */
+  @media (min-width: 48rem) {
+    html {
+      scroll-padding-top: 6rem;
+    }
+  }
+
+  body {
+    @apply bg-white font-sans text-ink-700 antialiased;
+  }
+
+  ::selection {
+    background-color: var(--color-brand-600);
+    color: #fff;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+    [data-reveal],
+    [data-reveal-stagger] > *,
+    .hero-enter,
+    .hero-enter-left,
+    .hero-enter-right,
+    .wa-enter {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
+    }
+  }
+}
+
+/*
+ * Aparición al scroll. Sólo opacity + translate3d/scale: Safari pinta esto
+ * en GPU y no sufre el flicker de blur/filter ni el recorte de scroll-driven CSS.
+ */
+[data-reveal],
+[data-reveal-stagger] > * {
+  opacity: 0;
+  transform: translate3d(0, 28px, 0);
+  transition:
+    opacity 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+[data-reveal="left"] {
+  transform: translate3d(-48px, 0, 0);
+}
+
+[data-reveal="right"] {
+  transform: translate3d(48px, 0, 0);
+}
+
+[data-reveal="up"] {
+  transform: translate3d(0, 36px, 0);
+}
+
+[data-reveal="down"] {
+  transform: translate3d(0, -28px, 0);
+}
+
+[data-reveal="zoom"] {
+  transform: translate3d(0, 18px, 0) scale(0.96);
+}
+
+[data-reveal-stagger="alternate"] > *:nth-child(odd) {
+  transform: translate3d(-40px, 10px, 0);
+}
+
+[data-reveal-stagger="alternate"] > *:nth-child(even) {
+  transform: translate3d(40px, 10px, 0);
+}
+
+[data-reveal-stagger="left"] > * {
+  transform: translate3d(-36px, 0, 0);
+}
+
+[data-reveal-stagger="up"] > * {
+  transform: translate3d(0, 28px, 0);
+}
+
+[data-reveal-stagger="zoom"] > * {
+  transform: translate3d(0, 16px, 0) scale(0.94);
+}
+
+[data-reveal].is-visible,
+[data-reveal-stagger] > *.is-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+}
+
+[data-reveal-stagger] > *:nth-child(1) {
+  transition-delay: 0ms;
+}
+[data-reveal-stagger] > *:nth-child(2) {
+  transition-delay: 70ms;
+}
+[data-reveal-stagger] > *:nth-child(3) {
+  transition-delay: 140ms;
+}
+[data-reveal-stagger] > *:nth-child(4) {
+  transition-delay: 210ms;
+}
+[data-reveal-stagger] > *:nth-child(5) {
+  transition-delay: 280ms;
+}
+[data-reveal-stagger] > *:nth-child(6) {
+  transition-delay: 350ms;
+}
+[data-reveal-stagger] > *:nth-child(7) {
+  transition-delay: 420ms;
+}
+[data-reveal-stagger] > *:nth-child(8) {
+  transition-delay: 490ms;
+}
+
+@keyframes hero-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes hero-enter-left {
+  from {
+    opacity: 0;
+    transform: translate3d(-40px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes hero-enter-right {
+  from {
+    opacity: 0;
+    transform: translate3d(40px, 0, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.hero-enter {
+  animation: hero-enter 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-enter-left {
+  animation: hero-enter-left 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.hero-enter-right {
+  animation: hero-enter-right 0.85s cubic-bezier(0.22, 1, 0.36, 1) 0.12s both;
+}
+
+.hero-enter-delay {
+  animation-delay: 0.12s;
+}
+
+@keyframes wa-enter {
+  from {
+    opacity: 0;
+    transform: translate3d(16px, 12px, 0) scale(0.88);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.wa-enter {
+  animation: wa-enter 0.55s cubic-bezier(0.22, 1, 0.36, 1) 0.45s both;
+}
+
+/*
+ * Base de los botones. Va como `@utility` (no en `@layer components`) para que
+ * las variantes de abajo puedan hacerle `@apply`: en Tailwind v4 sólo se puede
+ * aplicar utilidades reales, no clases de componente.
+ */
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 text-center text-[14px]
+    font-bold tracking-[0.02em] transition-colors duration-150;
+}
+
+@layer components {
+  /* Contenedor maestro: replica el lienzo de 1280px del mockup */
+  .container-acf {
+    @apply mx-auto w-full max-w-[1280px] px-6 sm:px-10 lg:px-[60px];
+  }
+
+  /* Ritmo vertical de las bandas de sección */
+  .section {
+    @apply py-16 sm:py-20 lg:py-[100px];
+  }
+
+  .section-lg {
+    @apply py-20 sm:py-24 lg:py-[110px];
+  }
+
+  /* Tipografía */
+  .eyebrow {
+    @apply text-[11.5px] font-bold uppercase tracking-[0.16em] text-brand-600;
+  }
+
+  .eyebrow-light {
+    @apply text-[11.5px] font-bold uppercase tracking-[0.16em] text-brand-400;
+  }
+
+  .display-title {
+    @apply font-serif text-[clamp(1.9rem,4.6vw,2.625rem)] leading-[1.18] text-navy-900;
+  }
+
+  .section-title {
+    @apply font-serif text-[clamp(1.55rem,3.2vw,1.875rem)] leading-[1.25] text-navy-900;
+  }
+
+  .card-title {
+    @apply font-serif text-[20px] leading-snug text-navy-900;
+  }
+
+  .body-lg {
+    @apply text-[16.5px] leading-[1.75] text-ink-700;
+  }
+
+  .body-md {
+    @apply text-[15px] leading-[1.7] text-ink-500;
+  }
+
+  /* Botones — bordes rectos, como el mockup */
+  .btn-primary {
+    @apply btn bg-brand-600 px-7 py-[15px] text-white hover:bg-brand-500;
+  }
+
+  .btn-light {
+    @apply btn bg-white px-7 py-[15px] text-navy-900 hover:bg-mist-50;
+  }
+
+  .btn-outline {
+    @apply btn border-[1.5px] border-brand-600 px-6 py-[13px] text-brand-600
+      hover:bg-brand-600 hover:text-white;
+  }
+
+  .btn-outline-light {
+    @apply btn border-[1.5px] border-white/40 px-6 py-[13px] text-white
+      hover:border-white hover:bg-white/10;
+  }
+
+  .btn-link {
+    @apply btn self-center text-navy-900 hover:text-brand-600;
+  }
+
+  /* Viñeta cuadrada azul reutilizada en listas */
+  .bullet {
+    @apply mt-[7px] size-[6px] flex-none bg-brand-600;
+  }
+
+  /* Gradientes de marca */
+  .bg-gradient-navy {
+    background-image: linear-gradient(135deg, #173a78 0%, #0b1b3f 62%);
+  }
+
+  .bg-gradient-navy-deep {
+    background-image: linear-gradient(135deg, #0b1b3f 0%, #081530 100%);
+  }
+
+  .bg-gradient-accent {
+    background-image: linear-gradient(135deg, #4c7bef 0%, #0b1b3f 100%);
+  }
+
+  .bar-gradient {
+    background-image: linear-gradient(180deg, #4c7bef 0%, #0b1b3f 100%);
+  }
+
+  /* Trama del hero: retícula + brillo, sin foto ni filtros animados */
+  .hero-mesh {
+    background-image:
+      radial-gradient(
+        ellipse 80% 70% at 72% 38%,
+        rgba(76, 123, 239, 0.28),
+        transparent 58%
+      ),
+      linear-gradient(rgba(255, 255, 255, 0.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.055) 1px, transparent 1px);
+    background-size:
+      auto,
+      44px 44px,
+      44px 44px;
+  }
+
+  /* Trama diagonal usada como marcador de mapa/imagen pendiente */
+  .hatch {
+    background-image: repeating-linear-gradient(
+      45deg,
+      #e4e9f4,
+      #e4e9f4 10px,
+      #eef1f8 10px,
+      #eef1f8 20px
+    );
+  }
+}
