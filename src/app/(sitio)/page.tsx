@@ -9,33 +9,39 @@ import { SectionHeading } from "@/components/section-heading";
 import { ServiceCard } from "@/components/service-card";
 import { StatsBand } from "@/components/stats-band";
 import {
-  alliances,
   clients,
   company,
   leadPartner,
   offices,
-  sectors,
-  services,
   yearsActive,
 } from "@/data/site";
+import { localizedAlliances, localizedServices, officeLabel } from "@/i18n/content";
+import { getDictionary } from "@/i18n/dictionary";
+import { getLocale } from "@/i18n/get-locale";
 import { getRecursos } from "@/sanity/queries";
-import { seo } from "@/lib/seo";
 
 export const revalidate = 300;
 
-export const metadata: Metadata = {
-  title: { absolute: seo.titleDefault },
-  description: seo.description,
-  alternates: { canonical: "/" },
-  openGraph: {
-    title: seo.titleDefault,
-    description: seo.description,
-    url: "/",
-    type: "website",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const dict = getDictionary(await getLocale());
+  return {
+    title: { absolute: dict.seo.homeTitle },
+    description: dict.seo.homeDescription,
+    alternates: { canonical: "/" },
+    openGraph: {
+      title: dict.seo.homeTitle,
+      description: dict.seo.homeDescription,
+      url: "/",
+      type: "website",
+    },
+  };
+}
 
 export default async function InicioPage() {
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
+  const serviceList = localizedServices(dict);
+  const allianceList = localizedAlliances(dict);
   const todos = await getRecursos();
   const destacado = todos.find((recurso) => recurso.destacado) ?? todos[0];
   const recursos = destacado
@@ -55,23 +61,20 @@ export default async function InicioPage() {
         <div className="flex items-center bg-white px-6 py-16 sm:px-10 lg:py-24 xl:pl-16">
           <div className="hero-enter-left w-full max-w-[620px] lg:ml-auto lg:pr-12">
             <p className="eyebrow">
-              Despacho de auditoría · impuestos · consultoría
+              {dict.hero.eyebrow}
             </p>
             <h1 className="mt-5 display-title">
-              Su despacho de auditoría, impuestos y consultoría en Oaxaca y
-              Puebla.
+              {dict.hero.title}
             </h1>
             <p className="mt-6 body-lg">
-              Más de dos décadas de experiencia, presencia en Oaxaca y Puebla, y
-              alianza con RSM Bogarín, firma integrante de la red internacional
-              RSM.
+              {dict.hero.lead}
             </p>
             <div className="mt-8 flex w-full flex-col gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-7 sm:gap-y-4">
               <Link href="#contacto" className="btn-primary w-full sm:w-auto">
-                Agendar una consulta
+                {dict.hero.cta}
               </Link>
               <Link href="#servicios" className="btn-link self-center">
-                Ver servicios <span aria-hidden="true">→</span>
+                {dict.hero.services} <span aria-hidden="true">→</span>
               </Link>
             </div>
           </div>
@@ -100,7 +103,7 @@ export default async function InicioPage() {
               {yearsActive}
             </p>
             <p className="mt-2.5 text-[12px] font-bold uppercase tracking-[0.14em] text-white/80">
-              Años de experiencia
+              {dict.hero.years}
             </p>
             <p className="mt-3 text-[12.5px] text-white/50">Oaxaca · Puebla</p>
           </div>
@@ -114,21 +117,21 @@ export default async function InicioPage() {
         <div className="container-acf" data-reveal="up">
           <SectionHeading
             align="center"
-            eyebrow="Servicios"
-            title="Seis áreas de especialización"
-            lead="Acompañamos a empresas, instituciones educativas y entidades gubernamentales en todo su ciclo contable y fiscal."
+            eyebrow={dict.services.eyebrow}
+            title={dict.services.title}
+            lead={dict.services.lead}
           />
           <div
             data-reveal-stagger="alternate"
             className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10"
           >
-            {services.map((service) => (
+            {serviceList.map((service) => (
               <ServiceCard key={service.slug} service={service} />
             ))}
           </div>
           <div className="mt-12 flex justify-center">
             <Link href="/servicios" className="btn-outline">
-              Ver el detalle de cada servicio{" "}
+              {dict.services.detail}{" "}
               <span aria-hidden="true">→</span>
             </Link>
           </div>
@@ -142,20 +145,19 @@ export default async function InicioPage() {
           className="container-acf flex flex-col gap-10 lg:flex-row lg:gap-[70px]"
         >
           <div className="lg:w-[260px] lg:flex-none">
-            <p className="eyebrow">Quiénes somos</p>
-            <h2 className="mt-3.5 section-title">Consolidados desde 2004</h2>
+            <p className="eyebrow">{dict.about.eyebrow}</p>
+            <h2 className="mt-3.5 section-title">{dict.about.title}</h2>
           </div>
           <div className="lg:max-w-[620px] lg:flex-1">
             <p className="body-lg">
-              {company.name} ({company.shortName}) es un despacho dedicado a
-              ofrecer servicios de calidad en materia fiscal, contable,
-              financiera, administrativa y de auditoría, con personal accesible,
-              receptivo y adaptable a las necesidades de cada cliente.
+              {dict.about.body
+                .replace("{name}", company.name)
+                .replace("{short}", company.shortName)}
             </p>
             <dl className="mt-8 grid gap-5 border-t border-hairline pt-7 sm:grid-cols-2">
               <div>
                 <dt className="text-[11.5px] font-bold uppercase tracking-[0.12em] text-ink-400">
-                  Razón social
+                  {dict.about.legalName}
                 </dt>
                 <dd className="mt-1.5 text-[15px] text-navy-900">
                   {company.name}
@@ -180,7 +182,7 @@ export default async function InicioPage() {
               <div aria-hidden="true" className="bar-gradient w-2 flex-none" />
               <Image
                 src={leadPartner.photo.src}
-                alt={leadPartner.photo.alt}
+                alt={dict.about.photoAlt}
                 width={leadPartner.photo.width}
                 height={leadPartner.photo.height}
                 className="w-full bg-white object-cover object-top"
@@ -189,18 +191,18 @@ export default async function InicioPage() {
             </div>
           </figure>
           <div data-reveal="right" className="lg:pt-1">
-            <p className="eyebrow">Representante legal</p>
+            <p className="eyebrow">{dict.about.legalEyebrow}</p>
             <h3 className="mt-3 font-serif text-[24px] leading-snug text-navy-900 lg:text-[26px]">
               {leadPartner.name}
             </h3>
             <p className="mt-1.5 text-[14.5px] font-semibold text-brand-600">
-              {leadPartner.role}
+              {dict.about.role}
             </p>
             <p className="mt-5 max-w-[620px] text-[15.5px] leading-[1.7] text-ink-700">
-              {leadPartner.bio}
+              {dict.about.bio}
             </p>
             <ul className="mt-6 space-y-2">
-              {leadPartner.credentials.map((credential) => (
+              {dict.about.credentials.map((credential) => (
                 <li
                   key={credential}
                   className="flex max-w-[640px] gap-2.5 text-[14.5px] leading-[1.7] text-ink-700"
@@ -211,7 +213,7 @@ export default async function InicioPage() {
               ))}
             </ul>
             <p className="mt-5 text-[13.5px] text-ink-400">
-              Cel.{" "}
+              {dict.about.cell}{" "}
               <a
                 className="transition-colors hover:text-brand-600"
                 href={`tel:${leadPartner.phoneHref}`}
@@ -219,7 +221,7 @@ export default async function InicioPage() {
                 {leadPartner.phone}
               </a>
               <span className="px-2">·</span>
-              Ofic.{" "}
+              {dict.about.office}{" "}
               <a
                 className="transition-colors hover:text-brand-600"
                 href={`tel:${leadPartner.officePhoneHref}`}
@@ -243,15 +245,15 @@ export default async function InicioPage() {
         <div className="container-acf" data-reveal="down">
           <SectionHeading
             align="center"
-            eyebrow="Alianzas"
-            title="Alianzas estratégicas"
-            lead="Mantenemos el trato directo de un despacho local con el respaldo técnico de firmas de alcance nacional e internacional."
+            eyebrow={dict.alliances.eyebrow}
+            title={dict.alliances.title}
+            lead={dict.alliances.lead}
           />
           <div
             data-reveal-stagger="alternate"
             className="mx-auto mt-12 grid max-w-[920px] gap-px bg-hairline sm:grid-cols-2"
           >
-            {alliances.map((alliance) => (
+            {allianceList.map((alliance) => (
               <div key={alliance.name} className="bg-white p-8 lg:p-9">
                 <h3 className="font-serif text-[21px] text-navy-900">
                   {alliance.name}
@@ -274,8 +276,8 @@ export default async function InicioPage() {
           <SectionHeading
             align="center"
             tone="onDark"
-            eyebrow="Clientes"
-            title="Empresas e instituciones que confían en nosotros"
+            eyebrow={dict.clients.eyebrow}
+            title={dict.clients.title}
           />
           <div className="mt-12 grid gap-px bg-white/15 sm:grid-cols-2 lg:grid-cols-4">
             {clients.map((client) => (
@@ -289,18 +291,16 @@ export default async function InicioPage() {
             <div aria-hidden="true" className="hidden bg-navy-900 sm:block" />
           </div>
           <p className="mt-8 max-w-[620px] text-[14px] leading-[1.7] text-white/55">
-            Algunos clientes no aparecen listados por acuerdos de
-            confidencialidad. Podemos compartir referencias específicas de su
-            sector durante una primera reunión.
+            {dict.clients.note}
           </p>
 
           <div className="mt-14 border-t border-white/15 pt-12">
-            <p className="eyebrow-light">Sectores atendidos</p>
+            <p className="eyebrow-light">{dict.clients.sectorsEyebrow}</p>
             <h3 className="mt-3.5 section-title max-w-[620px] text-white">
-              Experiencia en los sectores donde opera su empresa
+              {dict.clients.sectorsTitle}
             </h3>
             <ul className="mt-9 grid gap-x-10 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
-              {sectors.map((sector) => (
+              {dict.clients.sectors.map((sector) => (
                 <li
                   key={sector}
                   className="flex items-start gap-3 border-t border-white/15 pt-4 text-[15px] text-white/85"
@@ -322,19 +322,17 @@ export default async function InicioPage() {
         <div className="container-acf" data-reveal="left">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <SectionHeading
-              eyebrow="Videos y podcast"
-              title="Lo último sobre el SAT y su empresa"
+              eyebrow={dict.resources.eyebrow}
+              title={dict.resources.homeTitle}
               lead={
-                recursos.length === 0
-                  ? "Explicaciones en video y episodios de podcast. Cada pieza se publica desde el panel y tiene su propia página para compartir."
-                  : undefined
+                recursos.length === 0 ? dict.resources.homeEmptyLead : undefined
               }
               className="max-w-[560px]"
             />
             <Link href="/recursos" className="btn-link">
               {recursos.length > 0
-                ? "Ver todos los recursos"
-                : "Ir a Recursos"}{" "}
+                ? dict.resources.seeAll
+                : dict.resources.goTo}{" "}
               <span aria-hidden="true">→</span>
             </Link>
           </div>
@@ -343,7 +341,13 @@ export default async function InicioPage() {
             <div className="mt-10 sm:mt-12">
               {destacado && (
                 <div data-reveal="up" className="min-w-0">
-                  <RecursoCard recurso={destacado} destacado />
+                  <RecursoCard
+                    recurso={destacado}
+                    destacado
+                    locale={locale}
+                    videoLabel={dict.resources.video}
+                    podcastLabel={dict.resources.podcast}
+                  />
                 </div>
               )}
               {resto.length > 0 && (
@@ -352,15 +356,20 @@ export default async function InicioPage() {
                   className="mt-3 grid grid-cols-2 gap-3 sm:mt-6 sm:gap-6 lg:grid-cols-3 lg:gap-8"
                 >
                   {resto.map((recurso) => (
-                    <RecursoCard key={recurso._id} recurso={recurso} />
+                    <RecursoCard
+                      key={recurso._id}
+                      recurso={recurso}
+                      locale={locale}
+                      videoLabel={dict.resources.video}
+                      podcastLabel={dict.resources.podcast}
+                    />
                   ))}
                 </div>
               )}
             </div>
           ) : (
             <p className="mt-10 max-w-[560px] text-[15px] leading-[1.7] text-ink-500">
-              Todavía no hay publicaciones. Cuando Ramón suba el primer enlace
-              en el Studio, aparecerá aquí y en{" "}
+              {dict.resources.none}{" "}
               <Link
                 href="/recursos"
                 className="font-semibold text-brand-600 hover:text-navy-900"
@@ -378,8 +387,8 @@ export default async function InicioPage() {
         <div className="container-acf" data-reveal="up">
           <SectionHeading
             align="center"
-            eyebrow="Oficinas"
-            title="Dónde encontrarnos"
+            eyebrow={dict.offices.eyebrow}
+            title={dict.offices.title}
           />
           <OfficesGrid className="mt-12" />
         </div>
@@ -399,20 +408,18 @@ export default async function InicioPage() {
 
         <div className="container-acf relative grid gap-12 py-16 lg:grid-cols-[1fr_420px] lg:gap-[70px] lg:py-20">
           <div data-reveal="left">
-            <p className="eyebrow-light">Contacto</p>
+            <p className="eyebrow-light">{dict.contact.eyebrow}</p>
             <h2 className="mt-3.5 section-title text-white">
-              Hablemos de su negocio
+              {dict.contact.title}
             </h2>
             <p className="mt-4 max-w-[480px] text-[16px] leading-[1.75] text-white/75">
-              Llene el formulario y se abrirá WhatsApp con su consulta lista
-              para enviar. Un especialista de ACF le responde por ese mismo
-              chat.
+              {dict.contact.lead}
             </p>
 
             <dl className="mt-10 space-y-7">
               <div>
                 <dt className="text-[11.5px] font-bold uppercase tracking-[0.14em] text-brand-400">
-                  Correo
+                  {dict.contact.email}
                 </dt>
                 <dd className="mt-2 text-[15.5px]">
                   <a
@@ -427,7 +434,7 @@ export default async function InicioPage() {
               {offices.map((office) => (
                 <div key={office.city}>
                   <dt className="text-[11.5px] font-bold uppercase tracking-[0.14em] text-brand-400">
-                    {office.city} · {office.label}
+                    {office.city} · {officeLabel(dict, office.city, office.label)}
                   </dt>
                   <dd className="mt-2 text-[15px] leading-[1.65] text-white/75">
                     {office.address}
@@ -436,7 +443,7 @@ export default async function InicioPage() {
                       className="text-white transition-colors hover:text-brand-400"
                       href={`tel:${office.phoneHref}`}
                     >
-                      Tel. {office.phone}
+                      {dict.offices.tel} {office.phone}
                     </a>
                   </dd>
                 </div>

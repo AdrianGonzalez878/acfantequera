@@ -3,7 +3,11 @@ import { Inter } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 
+import { LocaleProvider } from "@/components/locale-provider";
 import { company } from "@/data/site";
+import { htmlLang } from "@/i18n/config";
+import { getDictionary } from "@/i18n/dictionary";
+import { getLocale } from "@/i18n/get-locale";
 import { seo } from "@/lib/seo";
 
 import "./globals.css";
@@ -29,7 +33,7 @@ export const metadata: Metadata = {
   keywords: [...seo.keywords],
   alternates: {
     canonical: "/",
-    languages: { "es-MX": "/", es: "/" },
+    languages: { "es-MX": "/", es: "/", en: "/" },
   },
   formatDetection: {
     email: false,
@@ -112,18 +116,27 @@ export const viewport: Viewport = {
   ],
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
+
   return (
-    <html lang="es-MX" className={inter.variable} data-scroll-behavior="smooth">
+    <html
+      lang={htmlLang(locale)}
+      className={inter.variable}
+      data-scroll-behavior="smooth"
+    >
       <body>
         <noscript>
           <style>{`[data-reveal],[data-reveal-stagger]>*{opacity:1!important;transform:none!important}`}</style>
         </noscript>
-        {children}
+        <LocaleProvider locale={locale} dict={dict}>
+          {children}
+        </LocaleProvider>
         <Analytics />
         <SpeedInsights />
       </body>

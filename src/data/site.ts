@@ -35,20 +35,33 @@ export function whatsappUrl(message: string = whatsapp.message): string {
 }
 
 /** Mensaje prellenado cuando alguien envía el formulario de contacto. */
-export function whatsappConsultaMessage(fields: {
-  nombre: string;
-  empresa?: string;
-  email: string;
-  telefono?: string;
-  mensaje: string;
-}): string {
-  const lineas = [
-    "Hola, les escribo desde el sitio de ACF.",
-    `Nombre: ${fields.nombre}`,
-  ];
-  if (fields.empresa) lineas.push(`Empresa: ${fields.empresa}`);
-  lineas.push(`Correo: ${fields.email}`);
-  if (fields.telefono) lineas.push(`Teléfono: ${fields.telefono}`);
+export function whatsappConsultaMessage(
+  fields: {
+    nombre: string;
+    empresa?: string;
+    email: string;
+    telefono?: string;
+    mensaje: string;
+  },
+  labels?: {
+    hello: string;
+    name: string;
+    company: string;
+    email: string;
+    phone: string;
+  },
+): string {
+  const copy = labels ?? {
+    hello: "Hola, les escribo desde el sitio de ACF.",
+    name: "Nombre",
+    company: "Empresa",
+    email: "Correo",
+    phone: "Teléfono",
+  };
+  const lineas = [copy.hello, `${copy.name}: ${fields.nombre}`];
+  if (fields.empresa) lineas.push(`${copy.company}: ${fields.empresa}`);
+  lineas.push(`${copy.email}: ${fields.email}`);
+  if (fields.telefono) lineas.push(`${copy.phone}: ${fields.telefono}`);
   lineas.push("", fields.mensaje);
   return lineas.join("\n");
 }

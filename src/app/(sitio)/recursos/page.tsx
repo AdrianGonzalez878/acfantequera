@@ -7,6 +7,8 @@ import { MediaEmbed } from "@/components/media-embed";
 import { PageHero } from "@/components/page-hero";
 import { RecursosLista } from "@/components/recursos-lista";
 import { company } from "@/data/site";
+import { getDictionary } from "@/i18n/dictionary";
+import { getLocale } from "@/i18n/get-locale";
 import { parseMediaUrl } from "@/lib/media";
 import { breadcrumbJsonLd } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
@@ -15,27 +17,24 @@ import { getRecursos } from "@/sanity/queries";
 
 export const revalidate = 60;
 
-export const metadata: Metadata = {
-  title: "Videos y podcast sobre el SAT, impuestos y contabilidad",
-  description:
-    "Explicaciones en video y podcast sobre el SAT, obligaciones fiscales y contabilidad, a cargo del equipo de ACF Asesores y Consultores en Oaxaca y Puebla.",
-  alternates: { canonical: "/recursos" },
-  keywords: [
-    "podcast impuestos México",
-    "videos SAT",
-    "explicación fiscal",
-    "obligaciones fiscales empresas",
-  ],
-  openGraph: {
-    title: "Videos y podcast fiscales | ACF Antequera",
-    description:
-      "Contenido del despacho sobre el SAT, impuestos y contabilidad para empresas.",
-    url: "/recursos",
-    type: "website",
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const dict = getDictionary(await getLocale());
+  return {
+    title: dict.seo.resourcesTitle,
+    description: dict.seo.resourcesDescription,
+    alternates: { canonical: "/recursos" },
+    openGraph: {
+      title: dict.seo.resourcesOgTitle,
+      description: dict.seo.resourcesOgDescription,
+      url: "/recursos",
+      type: "website",
+    },
+  };
+}
 
 export default async function RecursosPage() {
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
   const recursos = await getRecursos();
   const destacado = recursos.find((recurso) => recurso.destacado) ?? recursos[0];
   const resto = destacado
@@ -46,9 +45,9 @@ export default async function RecursosPage() {
   return (
     <>
       <PageHero
-        eyebrow="Videos y podcast"
-        title="El SAT, explicado sin rodeos."
-        lead="Publicamos videos y episodios de podcast donde revisamos cambios fiscales, obligaciones y dudas frecuentes de nuestros clientes."
+        eyebrow={dict.resources.eyebrow}
+        title={dict.resources.pageTitle}
+        lead={dict.resources.pageLead}
       />
 
       {recursos.length === 0 ? (
@@ -57,22 +56,22 @@ export default async function RecursosPage() {
             <div className="max-w-[680px]" data-reveal="left">
               <h2 className="section-title">
                 {isSanityConfigured
-                  ? "Aún no hay videos ni episodios publicados"
-                  : "Estamos preparando esta sección"}
+                  ? dict.resources.emptyConfigured
+                  : dict.resources.emptyUnconfigured}
               </h2>
               <p className="mt-5 body-lg">
                 {isSanityConfigured
-                  ? "El CMS ya está conectado. Cada publicación es un enlace de YouTube, Spotify u otra plataforma: el sitio arma el reproductor solo."
-                  : "Muy pronto encontrará aquí videos y episodios de podcast sobre temas fiscales y contables. Mientras tanto, escríbanos si tiene una duda concreta: la respondemos directamente."}
+                  ? dict.resources.emptyConfiguredLead
+                  : dict.resources.emptyUnconfiguredLead}
               </p>
               <div className="mt-8 flex flex-wrap gap-4">
                 {isSanityConfigured ? (
                   <Link href="/studio" className="btn-primary">
-                    Abrir el Studio
+                    {dict.resources.openStudio}
                   </Link>
                 ) : (
                   <Link href="/#contacto" className="btn-primary">
-                    Enviar una pregunta
+                    {dict.resources.askQuestion}
                   </Link>
                 )}
                 <a href={`mailto:${company.email}`} className="btn-outline">
@@ -109,8 +108,8 @@ export default async function RecursosPage() {
                 <div className="flex flex-col justify-center">
                   <p className="eyebrow">
                     {destacado.formato === "podcast"
-                      ? "Episodio destacado"
-                      : "Video destacado"}
+                      ? dict.resources.featuredPodcast
+                      : dict.resources.featuredVideo}
                   </p>
                   <h2 className="mt-3.5 font-serif text-[26px] leading-snug text-navy-900">
                     {destacado.titulo}
@@ -119,7 +118,7 @@ export default async function RecursosPage() {
                     {destacado.resumen}
                   </p>
                   <p className="mt-5 text-[13px] text-ink-400">
-                    {formatDate(destacado.fecha)}
+                    {formatDate(destacado.fecha, locale)}
                     {destacado.duracion && (
                       <>
                         <span className="px-2">·</span>
@@ -137,7 +136,7 @@ export default async function RecursosPage() {
                     href={`/recursos/${destacado.slug}`}
                     className="btn mt-7 self-start text-brand-600 hover:text-navy-900"
                   >
-                    Ver la ficha completa <span aria-hidden="true">→</span>
+                    {dict.resources.fullFile} <span aria-hidden="true">→</span>
                   </Link>
                 </div>
               </div>
@@ -155,13 +154,13 @@ export default async function RecursosPage() {
       )}
 
       <CtaBand
-        title="¿Tiene una duda que merece su propio video?"
-        lead="Escríbanos el tema y lo consideramos para una próxima publicación. Si su caso requiere atención inmediata, agendamos una consulta."
+        title={dict.resources.ctaTitle}
+        lead={dict.resources.ctaLead}
       />
       <JsonLd
         data={breadcrumbJsonLd([
-          { name: "Inicio", path: "/" },
-          { name: "Videos y podcast", path: "/recursos" },
+          { name: dict.resources.homeCrumb, path: "/" },
+          { name: dict.resources.eyebrow, path: "/recursos" },
         ])}
       />
     </>

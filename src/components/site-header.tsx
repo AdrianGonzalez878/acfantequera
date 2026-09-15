@@ -5,21 +5,26 @@ import { usePathname } from "next/navigation";
 import { useMemo, useState } from "react";
 
 import { BrandLogo } from "@/components/brand-logo";
-import { company, nav, offices, type NavItem } from "@/data/site";
+import { LanguageSwitch } from "@/components/language-switch";
+import { useI18n } from "@/components/locale-provider";
+import { company, offices, type NavItem } from "@/data/site";
+import { navItems } from "@/i18n/content";
 import { useActiveSection } from "@/lib/use-active-section";
 import { cn } from "@/lib/utils";
 
 export function SiteHeader() {
   const pathname = usePathname();
+  const { dict } = useI18n();
   const [open, setOpen] = useState(false);
   const onLanding = pathname === "/";
+  const nav = navItems(dict);
 
   const sectionIds = useMemo(
     () =>
       nav
         .map((item) => item.section)
         .filter((section): section is string => section !== null),
-    [],
+    [nav],
   );
   const activeSection = useActiveSection(sectionIds, onLanding);
 
@@ -30,7 +35,6 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50">
-      {/* Franja de contacto directo */}
       <div className="hidden bg-navy-950 md:block">
         <div className="container-acf flex items-center justify-between py-2 text-[11.5px] tracking-[0.02em] text-white/60">
           <p>
@@ -56,14 +60,13 @@ export function SiteHeader() {
         </div>
       </div>
 
-      {/* Barra principal */}
       <div className="bg-navy-900">
         <div className="container-acf flex h-16 items-center justify-between gap-6">
           <div className="flex h-full min-w-0 items-center gap-6 xl:gap-8">
             <Link
               href="/"
               className="flex-none bg-white px-2.5 py-1.5"
-              aria-label={`${company.shortName} — inicio`}
+              aria-label={dict.nav.homeAria}
             >
               <BrandLogo
                 height={36}
@@ -73,7 +76,7 @@ export function SiteHeader() {
             </Link>
 
             <nav
-              aria-label="Navegación principal"
+              aria-label={dict.nav.mainNav}
               className="hidden h-full items-center gap-5 xl:flex"
             >
               {nav.map((item) => {
@@ -97,12 +100,13 @@ export function SiteHeader() {
             </nav>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-3 sm:gap-4">
+            <LanguageSwitch />
             <Link
               href="/#contacto"
               className="hidden bg-brand-600 px-5 py-2.5 text-[12.5px] font-bold text-white transition-colors hover:bg-brand-500 sm:inline-flex"
             >
-              Agendar consulta
+              {dict.nav.book}
             </Link>
 
             <button
@@ -113,7 +117,7 @@ export function SiteHeader() {
               className="-mr-2 inline-flex size-11 items-center justify-center text-white xl:hidden"
             >
               <span className="sr-only">
-                {open ? "Cerrar menú" : "Abrir menú"}
+                {open ? dict.nav.closeMenu : dict.nav.openMenu}
               </span>
               {open ? (
                 <svg viewBox="0 0 24 24" className="size-6" aria-hidden="true">
@@ -139,10 +143,9 @@ export function SiteHeader() {
         </div>
       </div>
 
-      {/* Menú móvil */}
       {open && (
         <div id="menu-movil" className="bg-navy-950 xl:hidden">
-          <nav aria-label="Navegación principal" className="container-acf py-2">
+          <nav aria-label={dict.nav.mainNav} className="container-acf py-2">
             {nav.map((item) => {
               const active = isActive(item);
               return (

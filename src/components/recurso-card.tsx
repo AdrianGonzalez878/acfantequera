@@ -5,6 +5,7 @@ import { parseMediaUrl } from "@/lib/media";
 import { formatDate } from "@/lib/utils";
 import { imageUrl } from "@/sanity/image";
 import type { RecursoCard as Recurso } from "@/sanity/queries";
+import type { Locale } from "@/i18n/config";
 
 function PlayGlyph({ className }: { className?: string }) {
   return (
@@ -31,9 +32,15 @@ function WaveGlyph({ className }: { className?: string }) {
 export function RecursoCard({
   recurso,
   destacado = false,
+  locale = "es",
+  videoLabel = "Video",
+  podcastLabel = "Podcast",
 }: {
   recurso: Recurso;
   destacado?: boolean;
+  locale?: Locale;
+  videoLabel?: string;
+  podcastLabel?: string;
 }) {
   const media = parseMediaUrl(recurso.url);
   const cover =
@@ -94,7 +101,7 @@ export function RecursoCard({
               : "flex flex-wrap items-center gap-x-2 gap-y-1 text-[10px] font-bold uppercase tracking-[0.12em] text-brand-600 sm:text-[11.5px]"
           }
         >
-          <span>{esPodcast ? "Podcast" : "Video"}</span>
+          <span>{esPodcast ? podcastLabel : videoLabel}</span>
           {media && (
             <>
               <span
@@ -179,7 +186,7 @@ export function RecursoCard({
               : "mt-auto pt-3 text-[11px] text-ink-400 sm:pt-5 sm:text-[12.5px]"
           }
         >
-          {formatDate(recurso.fecha)}
+          {formatDate(recurso.fecha, locale)}
         </p>
       </div>
     </article>

@@ -1,14 +1,19 @@
+"use client";
+
+import { useI18n } from "@/components/locale-provider";
 import { whatsapp, whatsappUrl } from "@/data/site";
 
-/** Botón fijo de WhatsApp: en México suele convertir más que el formulario. */
 export function WhatsAppButton() {
+  const { dict } = useI18n();
+  const href = whatsappUrl(dict.contact.waDefault);
+
   return (
     <a
-      href={whatsappUrl()}
+      href={href}
       target="_blank"
       rel="noreferrer"
       className="wa-enter group fixed bottom-28 right-4 z-40 flex size-14 items-center justify-center rounded-full bg-[#25D366] text-white shadow-[0_10px_30px_rgba(11,27,63,0.28)] transition-colors hover:bg-[#1EBE5B] sm:bottom-10 sm:right-5 sm:size-auto sm:gap-2.5 sm:py-3 sm:pl-3 sm:pr-4"
-      aria-label={`Escribir por WhatsApp al ${whatsapp.display}`}
+      aria-label={dict.wa.aria.replace("{phone}", whatsapp.display)}
     >
       <svg viewBox="0 0 32 32" className="size-7 flex-none" aria-hidden="true">
         <path
@@ -17,9 +22,9 @@ export function WhatsAppButton() {
         />
       </svg>
       <span className="hidden text-[13.5px] font-bold leading-tight sm:inline">
-        Escríbanos
+        {dict.wa.line1}
         <span className="block text-[11px] font-semibold text-white/85">
-          por WhatsApp
+          {dict.wa.line2}
         </span>
       </span>
     </a>

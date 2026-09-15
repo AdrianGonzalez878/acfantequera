@@ -3,19 +3,20 @@
 import { useMemo, useState } from "react";
 
 import { RecursoCard } from "@/components/recurso-card";
+import { useI18n } from "@/components/locale-provider";
 import type { RecursoCard as Recurso } from "@/sanity/queries";
 import { cn } from "@/lib/utils";
 
 type Filtro = "todos" | "video" | "podcast";
 
-const ETIQUETAS: Record<Filtro, string> = {
-  todos: "Todos",
-  video: "Videos",
-  podcast: "Podcast",
-};
-
 export function RecursosLista({ recursos }: { recursos: Recurso[] }) {
+  const { locale, dict } = useI18n();
   const [filtro, setFiltro] = useState<Filtro>("todos");
+  const etiquetas: Record<Filtro, string> = {
+    todos: dict.resources.all,
+    video: dict.resources.videos,
+    podcast: dict.resources.podcast,
+  };
 
   const disponibles = useMemo(() => {
     const formatos = new Set(recursos.map((recurso) => recurso.formato));
@@ -37,7 +38,7 @@ export function RecursosLista({ recursos }: { recursos: Recurso[] }) {
       {disponibles.length > 2 && (
         <div
           role="tablist"
-          aria-label="Filtrar por formato"
+          aria-label={dict.resources.filterLabel}
           className="flex flex-wrap gap-2 border-b border-hairline pb-5"
         >
           {disponibles.map((opcion) => (
@@ -54,7 +55,7 @@ export function RecursosLista({ recursos }: { recursos: Recurso[] }) {
                   : "bg-mist-50 text-ink-500 hover:text-navy-900",
               )}
             >
-              {ETIQUETAS[opcion]}
+              {etiquetas[opcion]}
             </button>
           ))}
         </div>
@@ -62,7 +63,13 @@ export function RecursosLista({ recursos }: { recursos: Recurso[] }) {
 
       <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-6 lg:grid-cols-3 lg:gap-8">
         {visibles.map((recurso) => (
-          <RecursoCard key={recurso._id} recurso={recurso} />
+          <RecursoCard
+            key={recurso._id}
+            recurso={recurso}
+            locale={locale}
+            videoLabel={dict.resources.video}
+            podcastLabel={dict.resources.podcast}
+          />
         ))}
       </div>
     </>

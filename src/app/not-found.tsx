@@ -3,13 +3,20 @@ import Link from "next/link";
 
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import { getDictionary } from "@/i18n/dictionary";
+import { getLocale } from "@/i18n/get-locale";
 
-export const metadata: Metadata = {
-  title: "Página no encontrada",
-  robots: { index: false, follow: false },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const dict = getDictionary(await getLocale());
+  return {
+    title: dict.notFound.title,
+    robots: { index: false, follow: false },
+  };
+}
 
-export default function NotFound() {
+export default async function NotFound() {
+  const dict = getDictionary(await getLocale());
+
   return (
     <>
       <SiteHeader />
@@ -17,18 +24,17 @@ export default function NotFound() {
         <div className="container-acf py-24 lg:py-32">
           <p className="eyebrow-light">Error 404</p>
           <h1 className="mt-4 max-w-[620px] font-serif text-[clamp(1.8rem,4vw,2.4rem)] leading-[1.2] text-white">
-            No encontramos la página que buscaba.
+            {dict.notFound.heading}
           </h1>
           <p className="mt-5 max-w-[520px] text-[16px] leading-[1.75] text-white/75">
-            Puede que el enlace haya cambiado. Vuelva al inicio o escríbanos y le
-            ayudamos a encontrar lo que necesita.
+            {dict.notFound.lead}
           </p>
           <div className="mt-9 flex flex-wrap gap-4">
             <Link href="/" className="btn-light">
-              Ir al inicio
+              {dict.notFound.home}
             </Link>
             <Link href="/#contacto" className="btn-outline-light">
-              Contactar al despacho
+              {dict.notFound.contact}
             </Link>
           </div>
         </div>

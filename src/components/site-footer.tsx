@@ -1,9 +1,16 @@
 import Link from "next/link";
 
 import { BrandLogo } from "@/components/brand-logo";
-import { company, nav, offices, services } from "@/data/site";
+import { company, offices } from "@/data/site";
+import { localizedServices, navItems, officeLabel } from "@/i18n/content";
+import { getDictionary } from "@/i18n/dictionary";
+import { getLocale } from "@/i18n/get-locale";
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const dict = getDictionary(await getLocale());
+  const nav = navItems(dict);
+  const serviceList = localizedServices(dict);
+
   return (
     <footer className="bg-navy-900 text-white/70">
       <div className="container-acf grid gap-12 py-16 sm:grid-cols-2 lg:grid-cols-4 lg:py-20">
@@ -19,10 +26,10 @@ export function SiteFooter() {
 
         <div>
           <h2 className="text-[11.5px] font-bold uppercase tracking-[0.16em] text-brand-400">
-            Servicios
+            {dict.nav.services}
           </h2>
           <ul className="mt-5 space-y-2.5 text-[14px]">
-            {services.map((service) => (
+            {serviceList.map((service) => (
               <li key={service.slug}>
                 <Link
                   href={`/servicios#${service.slug}`}
@@ -37,7 +44,7 @@ export function SiteFooter() {
 
         <div>
           <h2 className="text-[11.5px] font-bold uppercase tracking-[0.16em] text-brand-400">
-            Secciones
+            {dict.footer.sections}
           </h2>
           <ul className="mt-5 space-y-2.5 text-[14px]">
             {nav.map((item) => (
@@ -55,7 +62,7 @@ export function SiteFooter() {
 
         <div>
           <h2 className="text-[11.5px] font-bold uppercase tracking-[0.16em] text-brand-400">
-            Oficinas
+            {dict.nav.offices}
           </h2>
           <ul className="mt-5 space-y-5 text-[14px] leading-[1.65]">
             {offices.map((office) => (
@@ -64,7 +71,7 @@ export function SiteFooter() {
                   {office.city}
                   <span className="font-normal text-white/45">
                     {" "}
-                    · {office.label}
+                    · {officeLabel(dict, office.city, office.label)}
                   </span>
                 </p>
                 <p className="mt-1">{office.address}</p>
@@ -72,7 +79,7 @@ export function SiteFooter() {
                   href={`tel:${office.phoneHref}`}
                   className="mt-1 inline-block transition-colors hover:text-white"
                 >
-                  Tel. {office.phone}
+                  {dict.offices.tel} {office.phone}
                 </a>
               </li>
             ))}
@@ -95,7 +102,7 @@ export function SiteFooter() {
           </p>
           <p>Oaxaca · Puebla</p>
           <p>
-            Desarrollado por{" "}
+            {dict.footer.developed}{" "}
             <a
               href="https://argaweb.com"
               target="_blank"

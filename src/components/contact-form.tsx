@@ -3,25 +3,9 @@
 import { useState, type FormEvent } from "react";
 import { z } from "zod";
 
+import { useI18n } from "@/components/locale-provider";
 import { whatsapp, whatsappConsultaMessage, whatsappUrl } from "@/data/site";
 import { cn } from "@/lib/utils";
-
-const schema = z.object({
-  nombre: z
-    .string()
-    .trim()
-    .min(2, "Escriba su nombre.")
-    .max(80, "El nombre es demasiado largo."),
-  empresa: z.string().trim().max(120, "El nombre es demasiado largo.").optional(),
-  email: z.email("Revise el correo electrónico."),
-  telefono: z.string().trim().max(30, "El teléfono es demasiado largo.").optional(),
-  mensaje: z
-    .string()
-    .trim()
-    .min(10, "Cuéntenos brevemente en qué podemos ayudar.")
-    .max(2000, "El mensaje es demasiado largo."),
-  sitio: z.string().max(0),
-});
 
 type FieldErrors = Partial<
   Record<"nombre" | "empresa" | "email" | "telefono" | "mensaje", string>
@@ -40,10 +24,28 @@ function FieldError({ id, message }: { id: string; message?: string }) {
 }
 
 export function ContactForm() {
+  const { dict } = useI18n();
   const [errors, setErrors] = useState<FieldErrors>({});
   const [formError, setFormError] = useState<string>();
   const [enviado, setEnviado] = useState(false);
-  const [waUrl, setWaUrl] = useState(whatsappUrl());
+  const [waUrl, setWaUrl] = useState(() => whatsappUrl(dict.contact.waDefault));
+
+  const schema = z.object({
+    nombre: z
+      .string()
+      .trim()
+      .min(2, dict.contact.errName)
+      .max(80, dict.contact.errLong),
+    empresa: z.string().trim().max(120, dict.contact.errLong).optional(),
+    email: z.email(dict.contact.errEmail),
+    telefono: z.string().trim().max(30, dict.contact.errPhone).optional(),
+    mensaje: z
+      .string()
+      .trim()
+      .min(10, dict.contact.errMessage)
+      .max(2000, dict.contact.errMessageLong),
+    sitio: z.string().max(0),
+  });
 
   function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -79,12 +81,20 @@ export function ContactForm() {
         }
       }
       setErrors(next);
-      setFormError("Revise los datos marcados y vuelva a intentar.");
+      setFormError(dict.contact.formError);
       return;
     }
 
     setErrors({});
-    const url = whatsappUrl(whatsappConsultaMessage(parsed.data));
+    const url = whatsappUrl(
+      whatsappConsultaMessage(parsed.data, {
+        hello: dict.contact.waHello,
+        name: dict.contact.waName,
+        company: dict.contact.waCompany,
+        email: dict.contact.waEmail,
+        phone: dict.contact.waPhone,
+      }),
+    );
     setWaUrl(url);
     const link = document.createElement("a");
     link.href = url;
@@ -100,17 +110,16 @@ export function ContactForm() {
     return (
       <div className="bg-white p-6 sm:p-9">
         <p className="font-serif text-[22px] text-navy-900">
-          WhatsApp está listo
+          {dict.contact.readyTitle}
         </p>
         <p className="mt-3 text-[15px] leading-[1.7] text-ink-500">
-          Se abrió una conversación con el despacho. Envíe el mensaje para que
-          lo recibamos.
+          {dict.contact.readyLead}
         </p>
         <a href={waUrl} className="btn-primary mt-6 inline-flex">
-          Abrir WhatsApp
+          {dict.contact.openWa}
         </a>
         <p className="mt-6 text-[14px] text-ink-400">
-          Número del despacho: {whatsapp.display}
+          {dict.contact.firmNumber}: {whatsapp.display}
         </p>
       </div>
     );
@@ -119,17 +128,14 @@ export function ContactForm() {
   return (
     <form onSubmit={onSubmit} className="bg-white p-5 sm:p-9" noValidate>
       <p className="font-serif text-[20px] text-navy-900">
-        Cuéntenos qué necesita
+        {dict.contact.formTitle}
       </p>
-      <p className="mt-2 text-[13.5px] text-ink-400">
-        Al enviar se abre WhatsApp con su consulta lista. Los campos con * son
-        obligatorios.
-      </p>
+      <p className="mt-2 text-[13.5px] text-ink-400">{dict.contact.formLead}</p>
 
       <div className="mt-6 flex flex-col gap-4">
         <div>
           <label htmlFor="nombre" className="sr-only">
-            Nombre
+            {dict.contact.name}
           </label>
           <input
             id="nombre"
@@ -137,7 +143,7 @@ export function ContactForm() {
             type="text"
             autoComplete="name"
             required
-            placeholder="Nombre *"
+            placeholder={`${dict.contact.name} *`}
             aria-invalid={Boolean(errors.nombre)}
             aria-describedby={errors.nombre ? "error-nombre" : undefined}
             className={cn(inputClass, errors.nombre && "border-[#B3261E]")}
@@ -147,21 +153,21 @@ export function ContactForm() {
 
         <div>
           <label htmlFor="empresa" className="sr-only">
-            Empresa
+            {dict.contact.company}
           </label>
           <input
             id="empresa"
             name="empresa"
             type="text"
             autoComplete="organization"
-            placeholder="Empresa"
+            placeholder={dict.contact.company}
             className={inputClass}
           />
         </div>
 
         <div>
           <label htmlFor="email" className="sr-only">
-            Correo electrónico
+            {dict.contact.emailField}
           </label>
           <input
             id="email"
@@ -169,7 +175,7 @@ export function ContactForm() {
             type="email"
             autoComplete="email"
             required
-            placeholder="Correo electrónico *"
+            placeholder={`${dict.contact.emailField} *`}
             aria-invalid={Boolean(errors.email)}
             aria-describedby={errors.email ? "error-email" : undefined}
             className={cn(inputClass, errors.email && "border-[#B3261E]")}
@@ -179,28 +185,28 @@ export function ContactForm() {
 
         <div>
           <label htmlFor="telefono" className="sr-only">
-            Teléfono
+            {dict.contact.phone}
           </label>
           <input
             id="telefono"
             name="telefono"
             type="tel"
             autoComplete="tel"
-            placeholder="Teléfono"
+            placeholder={dict.contact.phone}
             className={inputClass}
           />
         </div>
 
         <div>
           <label htmlFor="mensaje" className="sr-only">
-            Mensaje
+            {dict.contact.message}
           </label>
           <textarea
             id="mensaje"
             name="mensaje"
             rows={4}
             required
-            placeholder="Mensaje *"
+            placeholder={`${dict.contact.message} *`}
             aria-invalid={Boolean(errors.mensaje)}
             aria-describedby={errors.mensaje ? "error-mensaje" : undefined}
             className={cn(
@@ -213,7 +219,7 @@ export function ContactForm() {
         </div>
 
         <div aria-hidden="true" className="hidden">
-          <label htmlFor="sitio">No llenar</label>
+          <label htmlFor="sitio">{dict.contact.honeypot}</label>
           <input
             id="sitio"
             name="sitio"
@@ -224,7 +230,7 @@ export function ContactForm() {
         </div>
 
         <button type="submit" className="btn-primary w-full py-[15px]">
-          Enviar por WhatsApp
+          {dict.contact.submit}
         </button>
       </div>
 

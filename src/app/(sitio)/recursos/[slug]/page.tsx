@@ -7,6 +7,8 @@ import { MediaEmbed } from "@/components/media-embed";
 import { NotasRecurso } from "@/components/notas-recurso";
 import { RecursoCard } from "@/components/recurso-card";
 import { company, leadPartner } from "@/data/site";
+import { getDictionary } from "@/i18n/dictionary";
+import { getLocale } from "@/i18n/get-locale";
 import { parseMediaUrl } from "@/lib/media";
 import { absoluteUrl, breadcrumbJsonLd, durationToIso8601 } from "@/lib/seo";
 import { formatDate } from "@/lib/utils";
@@ -29,7 +31,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const recurso = await getRecurso(slug);
-  if (!recurso) return { title: "Contenido no encontrado" };
+  if (!recurso) return { title: getDictionary(await getLocale()).seo.missingContent };
 
   const media = parseMediaUrl(recurso.url);
   const imagen =
@@ -59,6 +61,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function RecursoPage({ params }: Props) {
   const { slug } = await params;
+  const locale = await getLocale();
+  const dict = getDictionary(locale);
   const recurso = await getRecurso(slug);
   if (!recurso) notFound();
 
@@ -90,8 +94,8 @@ export default async function RecursoPage({ params }: Props) {
   };
 
   const breadcrumbs = breadcrumbJsonLd([
-    { name: "Inicio", path: "/" },
-    { name: "Videos y podcast", path: "/recursos" },
+    { name: dict.resources.homeCrumb, path: "/" },
+    { name: dict.resources.eyebrow, path: "/recursos" },
     { name: recurso.titulo, path: `/recursos/${recurso.slug}` },
   ]);
 
@@ -104,10 +108,10 @@ export default async function RecursoPage({ params }: Props) {
               href="/recursos"
               className="text-[13px] font-semibold text-white/60 transition-colors hover:text-white"
             >
-              <span aria-hidden="true">←</span> Videos y podcast
+              <span aria-hidden="true">←</span> {dict.resources.back}
             </Link>
             <p className="eyebrow-light mt-6">
-              {esPodcast ? "Podcast" : "Video"}
+              {esPodcast ? dict.resources.podcast : dict.resources.video}
               {media && (
                 <>
                   <span className="px-2 text-white/25">·</span>
@@ -121,7 +125,7 @@ export default async function RecursoPage({ params }: Props) {
               {recurso.titulo}
             </h1>
             <p className="mt-4 text-[13.5px] text-white/55">
-              {formatDate(recurso.fecha)}
+              {formatDate(recurso.fecha, locale)}
               {recurso.duracion && (
                 <>
                   <span className="px-2 text-white/25">·</span>
@@ -159,7 +163,7 @@ export default async function RecursoPage({ params }: Props) {
               {recurso.temas && recurso.temas.length > 0 && (
                 <div className="mb-8">
                   <h2 className="text-[11.5px] font-bold uppercase tracking-[0.14em] text-ink-400">
-                    Temas
+                    {dict.resources.topics}
                   </h2>
                   <div className="mt-3 flex flex-wrap gap-2">
                     {recurso.temas.map((tema) => (
@@ -181,19 +185,20 @@ export default async function RecursoPage({ params }: Props) {
                   rel="noreferrer"
                   className="btn-outline w-full"
                 >
-                  Ver en {media.providerLabel} <span aria-hidden="true">↗</span>
+                  {dict.resources.watchOn} {media.providerLabel}{" "}
+                  <span aria-hidden="true">↗</span>
                 </a>
               )}
 
               <div className="mt-8 border-t border-hairline pt-6">
                 <p className="text-[14.5px] leading-[1.7] text-ink-500">
-                  ¿Su caso necesita revisión personalizada?
+                  {dict.resources.needReview}
                 </p>
                 <Link
                   href="/#contacto"
                   className="btn mt-3 text-brand-600 hover:text-navy-900"
                 >
-                  Agendar una consulta <span aria-hidden="true">→</span>
+                  {dict.hero.cta} <span aria-hidden="true">→</span>
                 </Link>
               </div>
             </aside>
@@ -204,10 +209,16 @@ export default async function RecursoPage({ params }: Props) {
       {relacionados.length > 0 && (
         <section className="section bg-mist-50">
           <div className="container-acf">
-            <h2 className="section-title">Más contenido</h2>
+            <h2 className="section-title">{dict.resources.more}</h2>
             <div className="mt-8 grid grid-cols-2 gap-3 sm:mt-10 sm:gap-6 lg:grid-cols-3 lg:gap-8">
               {relacionados.map((item) => (
-                <RecursoCard key={item._id} recurso={item} />
+                <RecursoCard
+                  key={item._id}
+                  recurso={item}
+                  locale={locale}
+                  videoLabel={dict.resources.video}
+                  podcastLabel={dict.resources.podcast}
+                />
               ))}
             </div>
           </div>

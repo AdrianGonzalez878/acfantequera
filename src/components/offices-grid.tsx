@@ -1,7 +1,12 @@
 import { offices } from "@/data/site";
+import { officeLabel } from "@/i18n/content";
+import { getDictionary } from "@/i18n/dictionary";
+import { getLocale } from "@/i18n/get-locale";
 import { cn } from "@/lib/utils";
 
-export function OfficesGrid({ className }: { className?: string }) {
+export async function OfficesGrid({ className }: { className?: string }) {
+  const dict = getDictionary(await getLocale());
+
   return (
     <div
       className={cn(
@@ -15,7 +20,7 @@ export function OfficesGrid({ className }: { className?: string }) {
           <div className="min-w-0 flex-1 overflow-hidden">
             <iframe
               src={office.mapEmbedUrl}
-              title={`Mapa de la oficina de ${office.city}`}
+              title={dict.offices.mapTitle.replace("{city}", office.city)}
               loading="lazy"
               referrerPolicy="no-referrer-when-downgrade"
               className="block h-[200px] w-full max-w-full border-0 bg-mist-100 sm:h-[220px]"
@@ -24,14 +29,14 @@ export function OfficesGrid({ className }: { className?: string }) {
               <h3 className="font-serif text-[19px] text-navy-900">
                 {office.city}
                 <span className="ml-2 align-middle text-[11.5px] font-bold uppercase tracking-[0.1em] text-brand-600">
-                  {office.label}
+                  {officeLabel(dict, office.city, office.label)}
                 </span>
               </h3>
               <p className="mt-3 text-[14px] leading-[1.6] text-ink-500">
                 {office.address}
               </p>
               <p className="mt-3 text-[14px] font-bold text-navy-900">
-                Tel.{" "}
+                {dict.offices.tel}{" "}
                 <a
                   className="transition-colors hover:text-brand-600"
                   href={`tel:${office.phoneHref}`}
@@ -45,7 +50,7 @@ export function OfficesGrid({ className }: { className?: string }) {
                 rel="noreferrer"
                 className="mt-4 inline-flex items-center gap-1.5 text-[13.5px] font-semibold text-brand-600 transition-colors hover:text-navy-900"
               >
-                Abrir en Google Maps
+                {dict.offices.maps}
                 <span aria-hidden="true">↗</span>
               </a>
             </div>
