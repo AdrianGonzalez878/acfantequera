@@ -32,7 +32,7 @@ export const seo = {
     "ACF Antequera",
     "Asesores y Consultores Fiscales de Antequera",
     "RSM Bogarín",
-    "C.P. Domingo Ramón González Olivera",
+    "C.P.C. Domingo Ramón González Olivera",
   ],
 } as const;
 

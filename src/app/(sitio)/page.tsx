@@ -123,17 +123,11 @@ export default async function InicioPage() {
           />
           <div
             data-reveal-stagger="alternate"
-            className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10"
+            className="mt-14 grid items-start gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10"
           >
             {serviceList.map((service) => (
               <ServiceCard key={service.slug} service={service} />
             ))}
-          </div>
-          <div className="mt-12 flex justify-center">
-            <Link href="/servicios" className="btn-outline">
-              {dict.services.detail}{" "}
-              <span aria-hidden="true">→</span>
-            </Link>
           </div>
         </div>
       </section>
@@ -255,7 +249,22 @@ export default async function InicioPage() {
           >
             {allianceList.map((alliance) => (
               <div key={alliance.name} className="bg-white p-8 lg:p-9">
-                <h3 className="font-serif text-[21px] text-navy-900">
+                <a
+                  href={alliance.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={alliance.name}
+                  className="inline-flex h-14 items-center transition-opacity hover:opacity-80"
+                >
+                  <Image
+                    src={alliance.logo.src}
+                    alt={alliance.name}
+                    width={alliance.logo.width}
+                    height={alliance.logo.height}
+                    className="h-12 w-auto max-w-[220px] object-contain object-left"
+                  />
+                </a>
+                <h3 className="mt-6 font-serif text-[21px] text-navy-900">
                   {alliance.name}
                 </h3>
                 <p className="mt-2 text-[11.5px] font-bold uppercase tracking-[0.1em] text-brand-600">

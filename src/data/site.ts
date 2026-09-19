@@ -258,6 +258,12 @@ export type Alliance = {
   name: string;
   kind: string;
   desc: string;
+  href: string;
+  logo: {
+    src: string;
+    width: number;
+    height: number;
+  };
 };
 
 export const alliances: Alliance[] = [
@@ -265,23 +271,35 @@ export const alliances: Alliance[] = [
     name: "RSM Bogarín",
     kind: "Firma nacional · red internacional RSM",
     desc: "Colaboramos con RSM Bogarín, firma mexicana integrante de la red internacional RSM. La alianza amplía nuestra capacidad técnica y nos permite atender operaciones con alcance global en auditoría y consultoría.",
+    href: "https://www.rsm.global/mexico/es",
+    logo: {
+      src: "/alliances/rsm.png",
+      width: 332,
+      height: 140,
+    },
   },
   {
     name: "ECF · Estrategas Contables y Fiscales",
     kind: "Alianza nacional — Puebla",
     desc: "Trabajo conjunto con el despacho nacional ECF de Puebla, que refuerza nuestra cobertura de servicios fiscales y contables en el centro del país.",
+    href: "https://ecf.com.mx/",
+    logo: {
+      src: "/alliances/ecf.png",
+      width: 278,
+      height: 82,
+    },
   },
 ];
 
 export const leadPartner = {
   initials: "DR",
-  name: "C.P. Domingo Ramón González Olivera",
+  name: "C.P.C. Domingo Ramón González Olivera",
   role: "Representante Legal · Socio, Director General y Auditor Principal",
   photo: {
     src: "/ramon-gonzalez.jpg",
     width: 870,
     height: 1155,
-    alt: "Retrato del C.P. Domingo Ramón González Olivera, socio director de ACF",
+    alt: "Retrato del C.P.C. Domingo Ramón González Olivera, socio director de ACF",
   },
   bio: "Supervisa y firma los trabajos de auditoría de estados financieros, fiscal y gubernamental. Asesora a empresas e instituciones en materia fiscal, contable, de negocios y de prevención de lavado de dinero (PLD).",
   phone: "951 547 0881",

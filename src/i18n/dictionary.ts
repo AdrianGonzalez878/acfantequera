@@ -36,7 +36,6 @@ const es = {
     eyebrow: "Servicios",
     title: "Seis áreas de especialización",
     lead: "Acompañamos a empresas, instituciones educativas y entidades gubernamentales en todo su ciclo contable y fiscal.",
-    detail: "Ver el detalle de cada servicio",
     indexLabel: "Índice de servicios",
     pageTitle: "Seis áreas de especialización, un solo equipo responsable.",
     pageLead:
@@ -134,7 +133,7 @@ const es = {
     role: "Representante Legal · Socio, Director General y Auditor Principal",
     bio: "Supervisa y firma los trabajos de auditoría de estados financieros, fiscal y gubernamental. Asesora a empresas e instituciones en materia fiscal, contable, de negocios y de prevención de lavado de dinero (PLD).",
     photoAlt:
-      "Retrato del C.P. Domingo Ramón González Olivera, socio director de ACF",
+      "Retrato del C.P.C. Domingo Ramón González Olivera, socio director de ACF",
     credentials: [
       "Contador Público — Instituto Tecnológico Autónomo de México (ITAM)",
       "Maestría en Impuestos — Universidad Autónoma Benito Juárez de Oaxaca (UABJO)",
@@ -337,7 +336,6 @@ const en: typeof es = {
     eyebrow: "Services",
     title: "Six areas of specialization",
     lead: "We support companies, educational institutions and government entities throughout their accounting and tax cycle.",
-    detail: "See each service in detail",
     indexLabel: "Services index",
     pageTitle: "Six areas of specialization, one accountable team.",
     pageLead:
@@ -435,7 +433,7 @@ const en: typeof es = {
     role: "Legal Representative · Partner, Managing Director and Lead Auditor",
     bio: "He supervises and signs financial, tax and government audit engagements. He advises companies and institutions on tax, accounting, business and anti-money laundering (AML) matters.",
     photoAlt:
-      "Portrait of C.P. Domingo Ramón González Olivera, managing partner of ACF",
+      "Portrait of C.P.C. Domingo Ramón González Olivera, managing partner of ACF",
     credentials: [
       "Certified Public Accountant — Instituto Tecnológico Autónomo de México (ITAM)",
       "Master's in Taxation — Universidad Autónoma Benito Juárez de Oaxaca (UABJO)",
