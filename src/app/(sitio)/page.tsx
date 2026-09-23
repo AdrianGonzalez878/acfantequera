@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { ContactForm } from "@/components/contact-form";
+import { HomeHero } from "@/components/home-hero";
 import { OfficesGrid } from "@/components/offices-grid";
 import { RecursoCard } from "@/components/recurso-card";
 import { SectionHeading } from "@/components/section-heading";
@@ -56,59 +57,7 @@ export default async function InicioPage() {
 
   return (
     <>
-      {/* Hero partido: texto a la izquierda, gradiente a la derecha */}
-      <section className="grid lg:grid-cols-[1fr_1.15fr]">
-        <div className="flex items-center bg-white px-6 py-16 sm:px-10 lg:py-24 xl:pl-16">
-          <div className="hero-enter-left w-full max-w-[620px] lg:ml-auto lg:pr-12">
-            <p className="eyebrow">
-              {dict.hero.eyebrow}
-            </p>
-            <h1 className="mt-5 display-title">
-              {dict.hero.title}
-            </h1>
-            <p className="mt-6 body-lg">
-              {dict.hero.lead}
-            </p>
-            <div className="mt-8 flex w-full flex-col gap-3 sm:mt-9 sm:w-auto sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-7 sm:gap-y-4">
-              <Link href="#contacto" className="btn-primary w-full sm:w-auto">
-                {dict.hero.cta}
-              </Link>
-              <Link href="#servicios" className="btn-link self-center">
-                {dict.hero.services} <span aria-hidden="true">→</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-
-        <div className="bg-gradient-navy relative flex min-h-[340px] items-center justify-center overflow-hidden lg:min-h-[560px]">
-          <div aria-hidden="true" className="pointer-events-none absolute inset-0">
-            <div className="hero-mesh absolute inset-0" />
-            <Image
-              src="/logo-acf.png"
-              alt=""
-              width={1400}
-              height={903}
-              priority
-              className="absolute -left-[20%] -top-[24%] h-[118%] w-auto max-w-none opacity-45 mix-blend-multiply"
-            />
-            <span className="absolute -left-10 top-1/2 -translate-y-1/2 font-serif text-[180px] font-bold leading-none text-white/[0.07] sm:text-[240px] lg:text-[280px]">
-              ACF
-            </span>
-            <span className="absolute right-10 top-10 hidden size-[150px] rotate-[20deg] border border-white/25 lg:block" />
-            <span className="absolute right-24 top-24 hidden size-[88px] rotate-[20deg] border border-brand-400/50 lg:block" />
-            <span className="absolute bottom-[72px] left-10 hidden h-1.5 w-[180px] bg-brand-400 lg:block" />
-          </div>
-          <div className="hero-enter-right relative mx-6 border border-white/20 bg-navy-950/45 px-10 py-8 text-center text-white sm:px-12 sm:py-10">
-            <p className="font-serif text-[56px] leading-none lg:text-[72px]">
-              {yearsActive}
-            </p>
-            <p className="mt-2.5 text-[12px] font-bold uppercase tracking-[0.14em] text-white/80">
-              {dict.hero.years}
-            </p>
-            <p className="mt-3 text-[12.5px] text-white/50">Oaxaca · Puebla</p>
-          </div>
-        </div>
-      </section>
+      <HomeHero copy={dict.hero} yearsActive={yearsActive} />
 
       <StatsBand />
 
@@ -171,16 +120,15 @@ export default async function InicioPage() {
 
         {/* Socio director: la señal de confianza más fuerte del despacho */}
         <div className="container-acf mt-14 flex flex-col gap-10 border-t border-hairline pt-14 lg:flex-row lg:items-start lg:gap-14">
-          <figure data-reveal="left" className="flex-none">
-            <div className="flex max-w-[280px] lg:max-w-[300px]">
-              <div aria-hidden="true" className="bar-gradient w-2 flex-none" />
+          <figure data-reveal="left" className="flex-none self-start">
+            <div className="size-[200px] overflow-hidden rounded-full bg-mist-100 ring-1 ring-hairline lg:size-[220px]">
               <Image
                 src={leadPartner.photo.src}
                 alt={dict.about.photoAlt}
                 width={leadPartner.photo.width}
                 height={leadPartner.photo.height}
-                className="w-full bg-white object-cover object-top"
-                sizes="300px"
+                className="size-full object-cover object-[center_12%]"
+                sizes="220px"
               />
             </div>
           </figure>

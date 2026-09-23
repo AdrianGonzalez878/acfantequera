@@ -25,6 +25,8 @@ const es = {
     cta: "Agendar una consulta",
     services: "Ver servicios",
     years: "Años de experiencia",
+    photoAlt:
+      "Reunión de trabajo revisando información financiera",
   },
   stats: {
     offices: "Oficinas",
@@ -325,6 +327,8 @@ const en: typeof es = {
     cta: "Book a consultation",
     services: "View services",
     years: "Years of experience",
+    photoAlt:
+      "Working meeting reviewing financial information",
   },
   stats: {
     offices: "Offices",
