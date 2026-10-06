@@ -1,5 +1,5 @@
 import { parseBody } from "next-sanity/webhook";
-import { revalidateTag } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { type NextRequest, NextResponse } from "next/server";
 
 /**
@@ -18,19 +18,28 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const { isValidSignature, body } = await parseBody<{ _type?: string }>(
-      request,
-      secret,
-    );
+    const { isValidSignature, body } = await parseBody<{
+      _type?: string;
+      slug?: string | { current?: string };
+    }>(request, secret);
 
     if (!isValidSignature) {
       return NextResponse.json({ message: "Firma inválida." }, { status: 401 });
     }
 
-    // El listado y las fichas comparten la etiqueta "recurso".
     revalidateTag("recurso", "max");
     if (body?._type && body._type !== "recurso") {
       revalidateTag(body._type, "max");
+    }
+
+    revalidatePath("/");
+    revalidatePath("/recursos");
+    revalidatePath("/sitemap.xml");
+
+    const slug =
+      typeof body?.slug === "string" ? body.slug : body?.slug?.current;
+    if (slug) {
+      revalidatePath(`/recursos/${slug}`);
     }
 
     return NextResponse.json({ revalidated: true, now: Date.now() });

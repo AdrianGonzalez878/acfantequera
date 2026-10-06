@@ -21,7 +21,7 @@ import { getDictionary } from "@/i18n/dictionary";
 import { getLocale } from "@/i18n/get-locale";
 import { getRecursos } from "@/sanity/queries";
 
-export const revalidate = 300;
+export const revalidate = 10;
 
 export async function generateMetadata(): Promise<Metadata> {
   const dict = getDictionary(await getLocale());

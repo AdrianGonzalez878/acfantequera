@@ -7,9 +7,9 @@ export const client: SanityClient | null = isSanityConfigured
       projectId,
       dataset,
       apiVersion,
-      // En producción el CDN es más rápido; en local iría por detrás de lo
-      // que acabas de publicar en el Studio.
-      useCdn: process.env.NODE_ENV === "production",
+      // Sin CDN: si no, al publicar un video Sanity puede devolver la versión
+      // vieja hasta un minuto y el sitio parece que no se actualiza.
+      useCdn: false,
       perspective: "published",
     })
   : null;

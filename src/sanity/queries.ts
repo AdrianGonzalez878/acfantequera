@@ -76,7 +76,7 @@ async function sanityFetch<T>(
   try {
     return await client.fetch<T>(query, params, {
       next: {
-        revalidate: process.env.NODE_ENV === "development" ? 0 : 60,
+        revalidate: process.env.NODE_ENV === "development" ? 0 : 10,
         tags: ["recurso"],
       },
     });

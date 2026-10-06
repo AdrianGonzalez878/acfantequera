@@ -15,7 +15,7 @@ import { formatDate } from "@/lib/utils";
 import { isSanityConfigured } from "@/sanity/env";
 import { getRecursos } from "@/sanity/queries";
 
-export const revalidate = 60;
+export const revalidate = 10;
 
 export async function generateMetadata(): Promise<Metadata> {
   const dict = getDictionary(await getLocale());
