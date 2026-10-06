@@ -64,16 +64,16 @@ export default async function InicioPage() {
       {/* Servicios */}
       <section id="servicios" className="section-lg bg-white">
         <div className="container-acf" data-reveal="up">
-          <SectionHeading
-            align="center"
-            eyebrow={dict.services.eyebrow}
-            title={dict.services.title}
-            lead={dict.services.lead}
-          />
-          <div
-            data-reveal-stagger="alternate"
-            className="mt-14 grid items-start gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10"
-          >
+          <div className="flex flex-col gap-6 border-b border-hairline pb-10 lg:flex-row lg:items-end lg:justify-between lg:gap-16 lg:pb-12">
+            <div className="max-w-[520px]">
+              <p className="eyebrow">{dict.services.eyebrow}</p>
+              <h2 className="mt-3.5 section-title">{dict.services.title}</h2>
+            </div>
+            <p className="max-w-[440px] text-[16px] leading-[1.75] text-ink-500 lg:pb-1">
+              {dict.services.lead}
+            </p>
+          </div>
+          <div>
             {serviceList.map((service) => (
               <ServiceCard key={service.slug} service={service} />
             ))}
@@ -119,65 +119,59 @@ export default async function InicioPage() {
         </div>
 
         {/* Socio director: la señal de confianza más fuerte del despacho */}
-        <div className="container-acf mt-14 flex flex-col gap-10 border-t border-hairline pt-14 lg:flex-row lg:items-start lg:gap-14">
-          <figure data-reveal="left" className="flex-none self-start">
-            <div className="size-[200px] overflow-hidden rounded-full bg-mist-100 ring-1 ring-hairline lg:size-[220px]">
-              <Image
-                src={leadPartner.photo.src}
-                alt={dict.about.photoAlt}
-                width={leadPartner.photo.width}
-                height={leadPartner.photo.height}
-                className="size-full object-cover object-[center_12%]"
-                sizes="220px"
-              />
-            </div>
-          </figure>
-          <div data-reveal="right" className="lg:pt-1">
-            <p className="eyebrow">{dict.about.legalEyebrow}</p>
-            <h3 className="mt-3 font-serif text-[24px] leading-snug text-navy-900 lg:text-[26px]">
-              {leadPartner.name}
-            </h3>
-            <p className="mt-1.5 text-[14.5px] font-semibold text-brand-600">
-              {dict.about.role}
-            </p>
-            <p className="mt-5 max-w-[620px] text-[15.5px] leading-[1.7] text-ink-700">
-              {dict.about.bio}
-            </p>
-            <ul className="mt-6 space-y-2">
-              {dict.about.credentials.map((credential) => (
-                <li
-                  key={credential}
-                  className="flex max-w-[640px] gap-2.5 text-[14.5px] leading-[1.7] text-ink-700"
+        <div className="container-acf mt-14 border-t border-hairline pt-14">
+          <div data-reveal="up" className="flex gap-6 lg:gap-8">
+            <div
+              aria-hidden="true"
+              className="bar-gradient w-1.5 flex-none self-stretch"
+            />
+            <div className="min-w-0 flex-1">
+              <p className="eyebrow">{dict.about.legalEyebrow}</p>
+              <h3 className="mt-3 font-serif text-[24px] leading-snug text-navy-900 lg:text-[26px]">
+                {leadPartner.name}
+              </h3>
+              <p className="mt-1.5 text-[14.5px] font-semibold text-brand-600">
+                {dict.about.role}
+              </p>
+              <p className="mt-5 max-w-[620px] text-[15.5px] leading-[1.7] text-ink-700">
+                {dict.about.bio}
+              </p>
+              <ul className="mt-8 grid gap-x-10 gap-y-2.5 sm:grid-cols-2">
+                {dict.about.credentials.map((credential) => (
+                  <li
+                    key={credential}
+                    className="flex gap-2.5 text-[14.5px] leading-[1.7] text-ink-700"
+                  >
+                    <span aria-hidden="true" className="bullet" />
+                    <span>{credential}</span>
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-5 text-[13.5px] text-ink-400">
+                {dict.about.cell}{" "}
+                <a
+                  className="transition-colors hover:text-brand-600"
+                  href={`tel:${leadPartner.phoneHref}`}
                 >
-                  <span aria-hidden="true" className="bullet" />
-                  <span>{credential}</span>
-                </li>
-              ))}
-            </ul>
-            <p className="mt-5 text-[13.5px] text-ink-400">
-              {dict.about.cell}{" "}
-              <a
-                className="transition-colors hover:text-brand-600"
-                href={`tel:${leadPartner.phoneHref}`}
-              >
-                {leadPartner.phone}
-              </a>
-              <span className="px-2">·</span>
-              {dict.about.office}{" "}
-              <a
-                className="transition-colors hover:text-brand-600"
-                href={`tel:${leadPartner.officePhoneHref}`}
-              >
-                {leadPartner.officePhone}
-              </a>
-              <span className="px-2">·</span>
-              <a
-                className="transition-colors hover:text-brand-600"
-                href={`mailto:${leadPartner.email}`}
-              >
-                {leadPartner.email}
-              </a>
-            </p>
+                  {leadPartner.phone}
+                </a>
+                <span className="px-2">·</span>
+                {dict.about.office}{" "}
+                <a
+                  className="transition-colors hover:text-brand-600"
+                  href={`tel:${leadPartner.officePhoneHref}`}
+                >
+                  {leadPartner.officePhone}
+                </a>
+                <span className="px-2">·</span>
+                <a
+                  className="transition-colors hover:text-brand-600"
+                  href={`mailto:${leadPartner.email}`}
+                >
+                  {leadPartner.email}
+                </a>
+              </p>
+            </div>
           </div>
         </div>
       </section>

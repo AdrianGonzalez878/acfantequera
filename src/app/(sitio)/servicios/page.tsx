@@ -57,10 +57,7 @@ export default async function ServiciosPage() {
       </nav>
 
       <section className="section-lg bg-white">
-        <div
-          data-reveal-stagger="alternate"
-          className="container-acf grid items-start gap-8 sm:grid-cols-2 lg:grid-cols-3 lg:gap-10"
-        >
+        <div data-reveal="up" className="container-acf">
           {serviceList.map((service) => (
             <ServiceCard key={service.slug} service={service} />
           ))}

@@ -21,24 +21,35 @@ export function ServiceCard({ service }: { service: Service }) {
   }, [service.slug]);
 
   return (
-    <article id={service.slug} className="bg-mist-50">
+    <article
+      id={service.slug}
+      className={cn(
+        "border-t border-hairline last:border-b",
+        open && "bg-mist-50/70",
+      )}
+    >
       <button
         type="button"
         aria-expanded={open}
         aria-controls={panelId}
         onClick={() => setOpen((value) => !value)}
-        className="flex w-full cursor-pointer items-start gap-4 p-7 text-left lg:p-[30px]"
+        className="group grid w-full cursor-pointer grid-cols-[auto_1fr_auto] items-start gap-x-5 py-8 text-left sm:gap-x-8 lg:grid-cols-[5.75rem_1fr_auto] lg:py-10"
       >
-        <div className="min-w-0 flex-1">
-          <p className="font-serif text-[30px] leading-none text-brand-600">
-            {service.num}
+        <span className="font-serif text-[26px] leading-none text-brand-600 lg:text-[28px]">
+          {service.num}
+        </span>
+        <span className="min-w-0">
+          <h3 className="font-serif text-[20px] leading-snug text-navy-900 sm:text-[22px] lg:text-[24px]">
+            {service.title}
+          </h3>
+          <p className="mt-2.5 max-w-[560px] text-[15px] leading-[1.7] text-ink-500">
+            {service.summary}
           </p>
-          <h3 className="mt-2.5 card-title">{service.title}</h3>
-        </div>
+        </span>
         <span
           aria-hidden="true"
           className={cn(
-            "mt-2 flex size-8 flex-none items-center justify-center border border-hairline text-brand-600 transition-transform duration-200",
+            "mt-0.5 flex size-8 flex-none items-center justify-center border border-hairline text-brand-600 transition-transform duration-200 group-hover:border-brand-600",
             open ? "rotate-45" : "rotate-0",
           )}
         >
@@ -55,15 +66,16 @@ export function ServiceCard({ service }: { service: Service }) {
       <div
         id={panelId}
         hidden={!open}
-        className="border-t border-hairline px-7 pb-7 lg:px-[30px] lg:pb-[30px]"
+        className="pb-8 lg:pb-10 lg:pl-[5.75rem]"
       >
-        <p className="pt-5 text-[14px] leading-[1.6] text-ink-700">
-          {service.summary}
-        </p>
-        <ul className="mt-4 space-y-1">
+        <ul className="grid gap-x-12 gap-y-2 sm:grid-cols-2">
           {service.items.map((item) => (
-            <li key={item} className="text-[13.5px] leading-[1.7] text-ink-500">
-              — {item}
+            <li
+              key={item}
+              className="flex gap-3 text-[14.5px] leading-[1.7] text-ink-700"
+            >
+              <span aria-hidden="true" className="bullet" />
+              <span>{item}</span>
             </li>
           ))}
         </ul>
