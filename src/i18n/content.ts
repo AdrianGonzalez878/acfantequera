@@ -8,7 +8,7 @@ export function navItems(dict: Dictionary): NavItem[] {
     { label: dict.nav.services, href: "/#servicios", section: "servicios" },
     { label: dict.nav.about, href: "/#nosotros", section: "nosotros" },
     { label: dict.nav.alliances, href: "/#alianzas", section: "alianzas" },
-    { label: dict.nav.clients, href: "/#clientes", section: "clientes" },
+    { label: dict.nav.clients, href: "/#sectores", section: "sectores" },
     { label: dict.nav.resources, href: "/recursos", section: null },
     { label: dict.nav.offices, href: "/#oficinas", section: "oficinas" },
     { label: dict.nav.contact, href: "/#contacto", section: "contacto" },

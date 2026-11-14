@@ -82,7 +82,7 @@ export const nav: NavItem[] = [
   { label: "Servicios", href: "/#servicios", section: "servicios" },
   { label: "Nosotros", href: "/#nosotros", section: "nosotros" },
   { label: "Alianzas", href: "/#alianzas", section: "alianzas" },
-  { label: "Clientes", href: "/#clientes", section: "clientes" },
+  { label: "Sectores", href: "/#sectores", section: "sectores" },
   { label: "Recursos", href: "/recursos", section: null },
   { label: "Oficinas", href: "/#oficinas", section: "oficinas" },
   { label: "Contacto", href: "/#contacto", section: "contacto" },
@@ -250,8 +250,8 @@ export const sectors: string[] = [
   "Comercio y distribución",
   "Instituciones educativas",
   "Organizaciones sin fines de lucro",
-  "Entidades gubernamentales",
   "Agroindustria",
+  "Industria textil",
 ];
 
 export type Alliance = {

@@ -38,13 +38,6 @@
     overflow-x: clip;
   }
 
-  /* Desde md aparece además la franja de contacto sobre la barra */
-  @media (min-width: 48rem) {
-    html {
-      scroll-padding-top: 6rem;
-    }
-  }
-
   body {
     @apply bg-white font-sans text-ink-700 antialiased;
   }

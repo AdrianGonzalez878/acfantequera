@@ -7,7 +7,7 @@ const es = {
     services: "Servicios",
     about: "Nosotros",
     alliances: "Alianzas",
-    clients: "Clientes",
+    clients: "Sectores",
     resources: "Recursos",
     offices: "Oficinas",
     contact: "Contacto",
@@ -169,24 +169,73 @@ const es = {
     eyebrow: "Clientes",
     title: "Empresas e instituciones que confían en nosotros",
     note: "Algunos clientes no aparecen listados por acuerdos de confidencialidad. Podemos compartir referencias específicas de su sector durante una primera reunión.",
-    sectorsEyebrow: "Sectores atendidos",
-    sectorsTitle: "Experiencia en los sectores donde opera su empresa",
-    sectors: [
-      "Industria y manufactura",
-      "Comercio y distribución",
-      "Instituciones educativas",
-      "Organizaciones sin fines de lucro",
-      "Entidades gubernamentales",
-      "Agroindustria",
-    ],
+  },
+  sectors: {
+    eyebrow: "Sectores",
+    kicker: "Sector",
+    title: "Sector gubernamental y sector privado",
+    lead: "Presentamos el trabajo del despacho en los dos ámbitos que atendemos: entidades de gobierno y empresas e instituciones privadas.",
+    government: {
+      title: "Sector gubernamental",
+      lead: "Auditoría, armonización contable y procesos de entrega-recepción para gobiernos estatales y municipales.",
+      photoAlt: "Edificios institucionales de cristal",
+      groups: [
+        {
+          title: "Procesos de entrega y recepción",
+          items: [
+            "Acompañamiento en la transición entre administraciones",
+            "Elaboración formal del acta de entrega-recepción",
+          ],
+        },
+        {
+          title: "Revisiones limitadas o procedimientos convenidos",
+          items: [
+            "Revisiones con procedimientos definidos de antemano con la entidad",
+            "Informes sobre el alcance acordado",
+          ],
+        },
+        {
+          title: "Auditoría de estados financieros",
+          items: [
+            "Auditoría de estados financieros de gobiernos estatales y municipales",
+          ],
+        },
+        {
+          title: "Armonización de la contabilidad gubernamental",
+          items: [
+            "Alineación de la contabilidad al marco aplicable a entidades públicas",
+          ],
+        },
+        {
+          title: "Consultoría y asesoría de riesgos",
+          items: [
+            "Consultoría y asesoría de riesgos en el entorno gubernamental",
+          ],
+        },
+      ],
+    },
+    private: {
+      title: "Sector privado",
+      lead: "Empresas, universidades y organizaciones que necesitan auditoría, impuestos, contabilidad y consultoría con un trato directo.",
+      photoAlt: "Panorama de edificios corporativos",
+      listTitle: "En nuestra experiencia con el sector privado atendemos:",
+      industries: [
+        "Industria y manufactura",
+        "Comercio y distribución",
+        "Instituciones educativas",
+        "Organizaciones sin fines de lucro",
+        "Agroindustria",
+        "Industria textil",
+      ],
+    },
   },
   resources: {
-    eyebrow: "Videos y podcast",
-    homeTitle: "Lo último sobre el SAT y su empresa",
+    eyebrow: "Sala de prensa",
+    homeTitle: "Webinars y videos del despacho",
     homeEmptyLead:
       "Explicaciones en video y episodios de podcast. Cada pieza se publica desde el panel y tiene su propia página para compartir.",
-    seeAll: "Ver todos los recursos",
-    goTo: "Ir a Recursos",
+    seeAll: "Ver todos los webinars",
+    goTo: "Ir a la sala de prensa",
     none: "Todavía no hay publicaciones. Cuando Ramón suba el primer enlace en el Studio, aparecerá aquí y en",
     pageTitle: "El SAT, explicado sin rodeos.",
     pageLead:
@@ -310,7 +359,7 @@ const en: typeof es = {
     services: "Services",
     about: "About",
     alliances: "Alliances",
-    clients: "Clients",
+    clients: "Sectors",
     resources: "Resources",
     offices: "Offices",
     contact: "Contact",
@@ -471,24 +520,73 @@ const en: typeof es = {
     eyebrow: "Clients",
     title: "Companies and institutions that trust us",
     note: "Some clients are not listed due to confidentiality agreements. We can share specific references in your sector during an initial meeting.",
-    sectorsEyebrow: "Sectors we serve",
-    sectorsTitle: "Experience in the sectors where your company operates",
-    sectors: [
-      "Industry and manufacturing",
-      "Trade and distribution",
-      "Educational institutions",
-      "Non-profit organizations",
-      "Government entities",
-      "Agribusiness",
-    ],
+  },
+  sectors: {
+    eyebrow: "Sectors",
+    kicker: "Sector",
+    title: "Public sector and private sector",
+    lead: "We present the firm's work in the two areas we serve: government entities and private companies and institutions.",
+    government: {
+      title: "Public sector",
+      lead: "Audit, government accounting harmonization and handover processes for state and municipal governments.",
+      photoAlt: "Glass institutional buildings",
+      groups: [
+        {
+          title: "Handover and takeover processes",
+          items: [
+            "Support during the transition between administrations",
+            "Formal preparation of the handover record",
+          ],
+        },
+        {
+          title: "Limited reviews or agreed-upon procedures",
+          items: [
+            "Reviews with procedures defined in advance with the entity",
+            "Reports on the agreed scope",
+          ],
+        },
+        {
+          title: "Financial statement audits",
+          items: [
+            "Financial statement audits of state and municipal governments",
+          ],
+        },
+        {
+          title: "Harmonization of government accounting",
+          items: [
+            "Aligning accounting with the framework that applies to public entities",
+          ],
+        },
+        {
+          title: "Risk consulting and advisory",
+          items: [
+            "Risk consulting and advisory in a government setting",
+          ],
+        },
+      ],
+    },
+    private: {
+      title: "Private sector",
+      lead: "Companies, universities and organizations that need audit, tax, accounting and consulting with a direct relationship.",
+      photoAlt: "Corporate skyline",
+      listTitle: "In our private-sector work we serve:",
+      industries: [
+        "Industry and manufacturing",
+        "Trade and distribution",
+        "Educational institutions",
+        "Non-profit organizations",
+        "Agribusiness",
+        "Textile industry",
+      ],
+    },
   },
   resources: {
-    eyebrow: "Videos and podcasts",
-    homeTitle: "The latest on SAT and your company",
+    eyebrow: "Newsroom",
+    homeTitle: "Firm webinars and videos",
     homeEmptyLead:
       "Video explainers and podcast episodes. Each piece is published from the studio and has its own page to share.",
-    seeAll: "See all resources",
-    goTo: "Go to Resources",
+    seeAll: "See all webinars",
+    goTo: "Go to the newsroom",
     none: "There are no publications yet. When Ramón adds the first link in Studio, it will appear here and at",
     pageTitle: "SAT, explained without the runaround.",
     pageLead:

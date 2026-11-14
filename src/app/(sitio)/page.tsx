@@ -7,10 +7,10 @@ import { HomeHero } from "@/components/home-hero";
 import { OfficesGrid } from "@/components/offices-grid";
 import { RecursoCard } from "@/components/recurso-card";
 import { SectionHeading } from "@/components/section-heading";
+import { SectorsBand } from "@/components/sectors-band";
 import { ServiceCard } from "@/components/service-card";
 import { StatsBand } from "@/components/stats-band";
 import {
-  clients,
   company,
   leadPartner,
   offices,
@@ -221,54 +221,9 @@ export default async function InicioPage() {
         </div>
       </section>
 
-      {/* Clientes y sectores */}
-      <section id="clientes" className="section bg-navy-900">
-        <div className="container-acf" data-reveal="zoom">
-          <SectionHeading
-            align="center"
-            tone="onDark"
-            eyebrow={dict.clients.eyebrow}
-            title={dict.clients.title}
-          />
-          <div className="mt-12 grid gap-px bg-white/15 sm:grid-cols-2 lg:grid-cols-4">
-            {clients.map((client) => (
-              <div
-                key={client}
-                className="flex items-center bg-navy-900 px-5 py-7 text-[13px] font-bold uppercase leading-[1.5] tracking-[0.04em] text-white"
-              >
-                {client}
-              </div>
-            ))}
-            <div aria-hidden="true" className="hidden bg-navy-900 sm:block" />
-          </div>
-          <p className="mt-8 max-w-[620px] text-[14px] leading-[1.7] text-white/55">
-            {dict.clients.note}
-          </p>
+      <SectorsBand dict={dict} />
 
-          <div className="mt-14 border-t border-white/15 pt-12">
-            <p className="eyebrow-light">{dict.clients.sectorsEyebrow}</p>
-            <h3 className="mt-3.5 section-title max-w-[620px] text-white">
-              {dict.clients.sectorsTitle}
-            </h3>
-            <ul className="mt-9 grid gap-x-10 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
-              {dict.clients.sectors.map((sector) => (
-                <li
-                  key={sector}
-                  className="flex items-start gap-3 border-t border-white/15 pt-4 text-[15px] text-white/85"
-                >
-                  <span
-                    aria-hidden="true"
-                    className="mt-[9px] size-[6px] flex-none bg-brand-400"
-                  />
-                  <span>{sector}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* Recursos: adelanto en la landing; el archivo completo vive en /recursos */}
+      {/* Sala de prensa: webinars debajo de la presentación de sectores */}
       <section id="recursos" className="section bg-mist-50">
         <div className="container-acf" data-reveal="left">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">

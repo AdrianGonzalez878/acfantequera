@@ -2,12 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 import { BrandLogo } from "@/components/brand-logo";
 import { LanguageSwitch } from "@/components/language-switch";
 import { useI18n } from "@/components/locale-provider";
-import { company, offices, type NavItem } from "@/data/site";
+import type { NavItem } from "@/data/site";
 import { navItems } from "@/i18n/content";
 import { useActiveSection } from "@/lib/use-active-section";
 import { cn } from "@/lib/utils";
@@ -16,6 +16,8 @@ export function SiteHeader() {
   const pathname = usePathname();
   const { dict } = useI18n();
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastY = useRef(0);
   const onLanding = pathname === "/";
   const nav = navItems(dict);
 
@@ -28,38 +30,39 @@ export function SiteHeader() {
   );
   const activeSection = useActiveSection(sectionIds, onLanding);
 
+  useEffect(() => {
+    lastY.current = window.scrollY;
+
+    function onScroll() {
+      const y = window.scrollY;
+      const delta = y - lastY.current;
+      lastY.current = y;
+
+      if (open || y < 16) {
+        setHidden(false);
+        return;
+      }
+
+      if (delta > 6) setHidden(true);
+      else if (delta < -6) setHidden(false);
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [open]);
+
   function isActive(item: NavItem): boolean {
     if (item.section === null) return pathname.startsWith(item.href);
     return onLanding && activeSection === item.section;
   }
 
   return (
-    <header className="sticky top-0 z-50">
-      <div className="hidden bg-navy-950 md:block">
-        <div className="container-acf flex items-center justify-between py-2 text-[11.5px] tracking-[0.02em] text-white/60">
-          <p>
-            {offices.map((office, index) => (
-              <span key={office.city}>
-                {index > 0 && <span className="px-2 text-white/25">·</span>}
-                {office.city}{" "}
-                <a
-                  className="transition-colors hover:text-white"
-                  href={`tel:${office.phoneHref}`}
-                >
-                  {office.phone}
-                </a>
-              </span>
-            ))}
-          </p>
-          <a
-            className="transition-colors hover:text-white"
-            href={`mailto:${company.email}`}
-          >
-            {company.email}
-          </a>
-        </div>
-      </div>
-
+    <header
+      className={cn(
+        "sticky top-0 z-50 transition-transform duration-300 ease-out",
+        hidden && !open && "-translate-y-[calc(100%+2px)]",
+      )}
+    >
       <div className="bg-navy-900">
         <div className="container-acf flex h-16 items-center justify-between gap-6">
           <div className="flex h-full min-w-0 items-center gap-6 xl:gap-8">
@@ -145,7 +148,7 @@ export function SiteHeader() {
 
       {open && (
         <div id="menu-movil" className="bg-navy-950 xl:hidden">
-          <nav aria-label={dict.nav.mainNav} className="container-acf py-2">
+          <nav aria-label={dict.nav.mainNav} className="container-acf py-2 pb-4">
             {nav.map((item) => {
               const active = isActive(item);
               return (
@@ -166,21 +169,6 @@ export function SiteHeader() {
                 </Link>
               );
             })}
-            <div className="space-y-1 py-5 text-[13.5px] text-white/60">
-              {offices.map((office) => (
-                <p key={office.city}>
-                  {office.city}:{" "}
-                  <a className="text-white/85" href={`tel:${office.phoneHref}`}>
-                    {office.phone}
-                  </a>
-                </p>
-              ))}
-              <p>
-                <a className="text-white/85" href={`mailto:${company.email}`}>
-                  {company.email}
-                </a>
-              </p>
-            </div>
           </nav>
         </div>
       )}
