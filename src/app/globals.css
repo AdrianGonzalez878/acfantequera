@@ -38,6 +38,12 @@
     overflow-x: clip;
   }
 
+  @media (min-width: 80rem) {
+    html {
+      scroll-padding-top: 4.75rem;
+    }
+  }
+
   body {
     @apply bg-white font-sans text-ink-700 antialiased;
   }

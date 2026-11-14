@@ -43,7 +43,7 @@ export function useActiveSection(sectionIds: string[], enabled: boolean) {
       {
         // Descuenta la altura del header pegajoso para que el cambio
         // coincida con lo que el visitante realmente ve.
-        rootMargin: "-64px 0px -45% 0px",
+        rootMargin: "-76px 0px -45% 0px",
         threshold: [0.1, 0.25, 0.5, 0.75],
       },
     );

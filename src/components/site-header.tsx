@@ -51,6 +51,17 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, [open]);
 
+  useEffect(() => {
+    if (!open) return;
+
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(false);
+    }
+
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, [open]);
+
   function isActive(item: NavItem): boolean {
     if (item.section === null) return pathname.startsWith(item.href);
     return onLanding && activeSection === item.section;
@@ -63,24 +74,34 @@ export function SiteHeader() {
         hidden && !open && "-translate-y-[calc(100%+2px)]",
       )}
     >
-      <div className="bg-navy-900">
-        <div className="container-acf flex h-16 items-center justify-between gap-6">
+      {open ? (
+        <button
+          type="button"
+          tabIndex={-1}
+          aria-label={dict.nav.closeMenu}
+          className="fixed inset-0 z-40 bg-navy-950/50 xl:hidden"
+          onClick={() => setOpen(false)}
+        />
+      ) : null}
+
+      <div className="relative z-50 bg-navy-900">
+        <div className="container-acf flex h-16 items-center justify-between gap-6 xl:h-[4.75rem]">
           <div className="flex h-full min-w-0 items-center gap-6 xl:gap-8">
             <Link
               href="/"
-              className="flex-none bg-white px-2.5 py-1.5"
+              className="flex-none bg-white px-2.5 py-1.5 xl:px-3 xl:py-2"
               aria-label={dict.nav.homeAria}
             >
               <BrandLogo
                 height={36}
-                className="!h-7 !w-auto sm:!h-9"
+                className="!h-7 !w-auto sm:!h-9 xl:!h-10"
                 priority
               />
             </Link>
 
             <nav
               aria-label={dict.nav.mainNav}
-              className="hidden h-full items-center gap-5 xl:flex"
+              className="hidden h-full items-center gap-5 xl:flex xl:gap-7"
             >
               {nav.map((item) => {
                 const active = isActive(item);
@@ -90,7 +111,7 @@ export function SiteHeader() {
                     href={item.href}
                     aria-current={active ? "true" : undefined}
                     className={cn(
-                      "flex h-full items-center border-b-2 text-[13.5px] font-semibold transition-colors",
+                      "flex h-full items-center border-b-2 text-[13.5px] font-semibold transition-colors xl:text-[15px]",
                       active
                         ? "border-brand-400 text-white"
                         : "border-transparent text-white/70 hover:text-white",
@@ -104,10 +125,10 @@ export function SiteHeader() {
           </div>
 
           <div className="flex items-center gap-3 sm:gap-4">
-            <LanguageSwitch />
+            <LanguageSwitch className="xl:text-[13px]" />
             <Link
               href="/#contacto"
-              className="hidden bg-brand-600 px-5 py-2.5 text-[12.5px] font-bold text-white transition-colors hover:bg-brand-500 sm:inline-flex"
+              className="hidden bg-brand-600 px-5 py-2.5 text-[12.5px] font-bold text-white transition-colors hover:bg-brand-500 sm:inline-flex xl:px-6 xl:py-3 xl:text-[13.5px]"
             >
               {dict.nav.book}
             </Link>
@@ -147,7 +168,7 @@ export function SiteHeader() {
       </div>
 
       {open && (
-        <div id="menu-movil" className="bg-navy-950 xl:hidden">
+        <div id="menu-movil" className="relative z-50 bg-navy-950 xl:hidden">
           <nav aria-label={dict.nav.mainNav} className="container-acf py-2 pb-4">
             {nav.map((item) => {
               const active = isActive(item);
